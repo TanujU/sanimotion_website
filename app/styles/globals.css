@@ -1,0 +1,63 @@
+/*
+ * Sanimotion — Global stylesheet
+ *
+ * What: The single CSS entrypoint imported by root.tsx. Pulls in Tailwind v4,
+ * the design tokens, and base resets / typography defaults.
+ *
+ * Why: One import in root.tsx keeps the bundle path predictable for SSR and
+ * lets us layer concerns explicitly (tokens → utilities → custom base).
+ */
+
+@import "tailwindcss";
+@import "./tokens.css";
+
+/*
+ * Base layer — applied beneath Tailwind utilities.
+ * Sets canvas background, default ink color, and the Inter font on the body
+ * so that any unstyled element inherits the design system without effort.
+ */
+@layer base {
+  html {
+    /* Smoother text rendering on macOS — matches Apple-site feel */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-md);
+    line-height: var(--text-body-md--line-height);
+    font-weight: 400;
+  }
+
+  /* Selection — uses brand accent for premium feel */
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-accent-fg);
+  }
+
+  /* Visible keyboard focus everywhere — accessibility (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+/*
+ * Reduced-motion guardrail — honors prefers-reduced-motion: reduce by
+ * cancelling all non-essential animation. Per §D animation strategy.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
