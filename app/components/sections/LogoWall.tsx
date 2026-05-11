@@ -1,20 +1,13 @@
 /*
  * LogoWall — Markenpartner strip as an infinite marquee.
  *
- * What: Eyebrow + section title above a single horizontal strip of partner
- * names that scrolls continuously from right to left. Edge fades blur the
- * strip into the canvas on both sides for a polished frame.
+ * Each partner name in the content array is matched to an imported
+ * logo image; if no match is found we fall back to the rendered text
+ * so the build never breaks on a new partner. The marquee loop is
+ * a -50% translate over a duplicated track — no JS required.
  *
- * Why: A static grid of partner names reads as filler. A continuously
- * moving strip — borrowed from sites like Qonto, Stripe and Linear —
- * communicates "many partners" with motion alone, and reads as more
- * editorial than a logo wall. The strip pauses on hover so users can
- * read individual names.
- *
- * Performance: animation runs on `transform` only (cheap on the
- * compositor). The track is duplicated in DOM so a single -50% translate
- * loops seamlessly — no JS required. Disabled under
- * prefers-reduced-motion via the global guard in globals.css.
+ * Pauses on hover (so users can read names) and under
+ * prefers-reduced-motion (via the global guard in globals.css).
  */
 import { Container } from "~/components/primitives/Container";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
@@ -23,13 +16,41 @@ import { Section } from "~/components/primitives/Section";
 import { Reveal } from "~/components/primitives/Reveal";
 import type { LogoWallContent } from "~/schemas/content";
 
+import bauerfeind from "~/images/partners/bauerfeind.jpg";
+import juzo from "~/images/partners/juzo.jpg";
+import sporlastic from "~/images/partners/sporlastic.jpg";
+import bort from "~/images/partners/bort.jpg";
+import aspen from "~/images/partners/aspen.jpg";
+import russka from "~/images/partners/russka.jpg";
+import orthoservice from "~/images/partners/orthoservice.jpg";
+import springer from "~/images/partners/springer-aktiv.jpg";
+import mtr from "~/images/partners/mtr-rostock.jpg";
+import brieskorn from "~/images/partners/brieskorn.jpg";
+import drylock from "~/images/partners/drylock.jpg";
+
+// Lookup keyed by partner name. Names match the strings in
+// content/pages/home.ts. If a partner is missing, the component falls
+// back to rendering the text label.
+const LOGOS: Record<string, string> = {
+  Bauerfeind: bauerfeind,
+  Juzo: juzo,
+  Sporlastic: sporlastic,
+  "Bort Medical": bort,
+  Aspen: aspen,
+  Russka: russka,
+  Orthoservice: orthoservice,
+  "Springer Aktiv": springer,
+  "MTR Rostock": mtr,
+  Brieskorn: brieskorn,
+  Drylock: drylock,
+};
+
 type LogoWallProps = {
   content: LogoWallContent;
 };
 
 export function LogoWall({ content }: LogoWallProps) {
-  // Duplicate the items so the marquee track is exactly 200% wide and a
-  // -50% translate maps the second copy onto the first — a seamless loop.
+  // Duplicate so the marquee track is 200% wide and a -50% translate loops.
   const track = [...content.items, ...content.items];
 
   return (
@@ -43,13 +64,9 @@ export function LogoWall({ content }: LogoWallProps) {
         </Reveal>
       </Container>
 
-      {/* Marquee track — full-bleed (no Container) so partner names can
-          flow off the edges into the canvas fade. */}
       <Reveal className="group mt-12 lg:mt-16">
         <div
           className="relative overflow-hidden"
-          // Soft edge fades — mask the strip into the canvas so partners
-          // appear and disappear gracefully rather than hard-cropping.
           style={{
             maskImage:
               "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
@@ -58,29 +75,31 @@ export function LogoWall({ content }: LogoWallProps) {
           }}
           aria-label="Markenpartner — Liste"
         >
-          <ul
-            // animate-marquee is the Tailwind utility generated from
-            // --animate-marquee in tokens.css. Pause on hover so users
-            // can read individual names; pause when reduced-motion is
-            // requested via the global guard.
-            className="animate-marquee flex w-max gap-12 group-hover:[animation-play-state:paused] motion-reduce:animate-none lg:gap-16"
-          >
-            {track.map((name, i) => (
-              <li
-                key={`${name}-${i}`}
-                // aria-hidden on the duplicated half so screen readers
-                // don't announce every partner twice. The first half
-                // remains accessible.
-                aria-hidden={i >= content.items.length}
-                className="text-heading-md text-ink-subtle duration-base hover:text-ink flex shrink-0 items-center font-mono tracking-widest uppercase transition-colors"
-              >
-                {name}
-                <span
-                  className="rounded-pill bg-hairline ml-12 inline-block size-1 lg:ml-16"
-                  aria-hidden
-                />
-              </li>
-            ))}
+          <ul className="animate-marquee flex w-max items-center gap-16 group-hover:[animation-play-state:paused] motion-reduce:animate-none lg:gap-20">
+            {track.map((name, i) => {
+              const logo = LOGOS[name];
+              return (
+                <li
+                  key={`${name}-${i}`}
+                  aria-hidden={i >= content.items.length}
+                  className="flex h-12 shrink-0 items-center"
+                >
+                  {logo ? (
+                    <img
+                      src={logo}
+                      alt={name}
+                      className="ease-apple h-12 w-auto object-contain opacity-80 transition-all duration-500 hover:scale-105 hover:opacity-100"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <span className="text-heading-md text-ink-subtle font-mono tracking-widest uppercase">
+                      {name}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </Reveal>

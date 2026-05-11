@@ -1,34 +1,39 @@
 /*
- * LocationsTeaser — grid of city tiles with a CTA into /standorte.
+ * LocationsTeaser — grid of city tiles, each with a real storefront
+ * photo. Click any tile to deep-link into the matching anchor on
+ * /standorte. The CTA in the header navigates to the index.
  *
- * What: Eyebrow + title + a responsive grid of city tiles. Each tile is
- * a card with a soft accent gradient backdrop, a MapPin marker that
- * scales on hover, and a city name. Hovering a tile lifts it, draws an
- * accent ring, and reveals a "Standort ansehen →" prompt.
- *
- * Why: The homepage names four cities (Kreuzberg, Spandau, Zehlendorf,
- * Königs Wusterhausen) without addresses. The previous bare grid was
- * functional but lifeless — promoting tiles to interactive cards with
- * hover affordance fills the right-side space and matches the Qonto
- * "tiles that respond to you" feel.
+ * Storefront images are matched by city slug, so the content array
+ * stays a pure-text contract (cities is just an array of names).
  */
-import { MapPin, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Container } from "~/components/primitives/Container";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
 import { Heading } from "~/components/primitives/Heading";
 import { Section } from "~/components/primitives/Section";
 import { Reveal } from "~/components/primitives/Reveal";
-import { Button } from "~/components/primitives/Button";
 import { SmartLink } from "~/components/primitives/SmartLink";
 import type { LocationsTeaserContent } from "~/schemas/content";
-import backdropUrl from "~/images/sani-4.png";
+
+import kreuzberg from "~/images/locations/kreuzberg.jpg";
+import spandau from "~/images/locations/spandau.jpg";
+import zehlendorf from "~/images/locations/zehlendorf.jpg";
+import koenigsWusterhausen from "~/images/locations/koenigs-wusterhausen.jpg";
+
+// Slug → photo. Matches the slugs produced by the slug() helper below
+// (which strips diacritics, e.g. "ö" → "o").
+const STOREFRONT: Record<string, string> = {
+  kreuzberg,
+  spandau,
+  zehlendorf,
+  "konigs-wusterhausen": koenigsWusterhausen,
+  "koenigs-wusterhausen": koenigsWusterhausen,
+};
 
 type LocationsTeaserProps = {
   content: LocationsTeaserContent;
 };
 
-// Slugify a city for the deep-link anchor (e.g. "Königs Wusterhausen"
-// → "konigs-wusterhausen"). Matches the IDs used in site.ts footer.
 function slug(city: string) {
   return city
     .toLowerCase()
@@ -42,97 +47,65 @@ function slug(city: string) {
 
 export function LocationsTeaser({ content }: LocationsTeaserProps) {
   return (
-    <Section tone="canvas" id="standorte" className="relative overflow-hidden">
-      {/* Decorative backdrop — Sanimotion photo spread across the full
-          right side of the section so it visually anchors the entire
-          Standorte band rather than sitting in a single corner. Masked
-          left-to-right so it fades into the canvas behind the heading
-          and city tiles. Hidden from a11y. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          maskImage:
-            "linear-gradient(to right, transparent 0%, transparent 30%, black 80%)",
-          WebkitMaskImage:
-            "linear-gradient(to right, transparent 0%, transparent 30%, black 80%)",
-        }}
-      >
-        <img
-          src={backdropUrl}
-          alt=""
-          aria-hidden
-          className="absolute inset-y-0 right-0 h-full w-full object-cover opacity-15 lg:w-2/3"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-
-      {/* Soft accent gradient blob — bottom-left, balances the photo on
-          the opposite side. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="bg-accent/6 rounded-pill absolute bottom-[-20%] left-[-10%] size-128 blur-3xl" />
-      </div>
-
-      <Container className="relative">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
-          <Reveal className="max-w-[40ch]">
+    <Section tone="muted">
+      <Container>
+        <div
+          id="standorte"
+          className="flex scroll-mt-24 flex-col items-center gap-8 text-center lg:scroll-mt-28"
+        >
+          <Reveal className="max-w-[50ch]">
             <Eyebrow>{content.eyebrow}</Eyebrow>
-            <Heading as="h2" size="display-md" className="mt-6">
+            <Heading as="h2" size="display-md" className="mt-6 text-balance">
               {content.title}
             </Heading>
           </Reveal>
-          <Reveal delay={0.08} className="shrink-0">
-            <Button href={content.cta.href} variant="secondary" size="md">
-              {content.cta.label} →
-            </Button>
-          </Reveal>
         </div>
 
-        <ul className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-16 lg:grid-cols-4">
-          {content.cities.map((city, i) => (
-            <Reveal as="li" key={city} delay={i * 0.05}>
-              <SmartLink
-                href={`/standorte#${slug(city)}`}
-                className="group bg-surface rounded-card border-hairline duration-base ease-apple hover:border-accent hover:shadow-soft relative flex h-full flex-col gap-4 overflow-hidden border p-6 transition-all hover:-translate-y-1 lg:p-8"
-                aria-label={`Sanimotion-Standort ${city}`}
-              >
-                {/* Decorative gradient halo — visible only on hover.
-                    Pure decoration. */}
-                <span
-                  aria-hidden
-                  className="bg-accent/0 group-hover:bg-accent/8 rounded-pill duration-base pointer-events-none absolute -top-12 -right-12 size-32 blur-2xl transition-colors"
-                />
-
-                {/* Marker */}
-                <span
-                  aria-hidden
-                  className="bg-accent/10 group-hover:bg-accent rounded-pill duration-base flex size-10 items-center justify-center transition-colors"
+        <ul className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-16 lg:grid-cols-4 lg:gap-5">
+          {content.cities.map((city, i) => {
+            const citySlug = slug(city);
+            const photo = STOREFRONT[citySlug];
+            // "konigs-wusterhausen" (no umlaut transliteration) is what the
+            // slug helper produces; the per-location route uses the same.
+            return (
+              <Reveal as="li" key={city} delay={i * 0.05}>
+                <SmartLink
+                  href={`/sanitatshaus-${citySlug}`}
+                  className="group bg-surface rounded-card border-hairline ease-apple hover:border-ink/20 hover:shadow-soft block h-full overflow-hidden border transition-all hover:-translate-y-1"
+                  aria-label={`Sanimotion-Standort ${city}`}
                 >
-                  <MapPin
-                    size={18}
-                    strokeWidth={1.5}
-                    className="text-accent group-hover:text-canvas duration-base transition-colors"
-                  />
-                </span>
-
-                {/* City name */}
-                <span className="text-heading-lg text-ink mt-2 font-semibold tracking-tight">
-                  {city}
-                </span>
-                <span className="text-caption text-ink-subtle font-mono tracking-widest uppercase">
-                  Berlin & Umland
-                </span>
-
-                {/* Hover affordance — slides in from the right to signal
-                    this tile is a link. */}
-                <span className="text-caption text-ink-subtle group-hover:text-accent duration-base ease-apple mt-auto flex -translate-x-1 items-center gap-1 pt-4 font-medium opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
-                  Standort ansehen
-                  <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden />
-                </span>
-              </SmartLink>
-            </Reveal>
-          ))}
+                  {/* Photo plate */}
+                  <div className="bg-muted relative aspect-[4/3] overflow-hidden">
+                    {photo && (
+                      <img
+                        src={photo}
+                        alt=""
+                        aria-hidden
+                        className="ease-apple absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
+                  </div>
+                  {/* Caption */}
+                  <div className="p-6 lg:p-7">
+                    <h3 className="text-heading-md text-ink font-semibold tracking-tight">
+                      {city}
+                    </h3>
+                    <span className="text-caption text-ink-subtle group-hover:text-ink duration-base mt-3 flex items-center gap-1 font-mono tracking-widest uppercase transition-colors">
+                      Standort ansehen
+                      <ArrowUpRight
+                        size={12}
+                        strokeWidth={1.5}
+                        aria-hidden
+                        className="ease-apple transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </span>
+                  </div>
+                </SmartLink>
+              </Reveal>
+            );
+          })}
         </ul>
       </Container>
     </Section>

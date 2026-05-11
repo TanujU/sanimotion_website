@@ -1,60 +1,74 @@
 /*
  * Home route (Startseite) — composition only.
  *
- * What: Loads typed home content (validated by Zod at module load) and
- * composes the section components in the order that mirrors the real
- * sanimotion.com homepage.
+ * Loads typed home content for the current locale and composes the
+ * section components in an Apple-flow order that matches the live
+ * sanimotion.com inventory.
  *
- * Order rationale:
- *   1. HeroPrimary       — brand statement + dual CTAs (Termin + Rezept)
- *   2. IconGrid          — six product categories
- *   3. ServicePair       — Hausbesuch + Rezept-Upload (the homepage hooks)
- *   4. AboutSnippet      — "Alles für Ihre Gesundheit" + 30+ Jahre
- *   5. FeatureCards      — six "why us" trust cards (matches sanimotion.com)
- *   6. LogoWall          — Markenpartner (Bauerfeind, Juzo, ...)
- *   7. LocationsTeaser   — four cities with a CTA into /standorte
- *   8. KontaktTermin     — phone, email, hours, CTAs + OpenStreetMap embed
+ * Order:
+ *   1. HeroPrimary       — brand statement + dual CTAs
+ *   2. AboutSnippet      — "Alles für Ihre Gesundheit" + 30+ Jahre
+ *   3. FeatureCards      — six "why us" trust cards
+ *   4. IconGrid          — six product categories with photos
+ *   5. CraftBand         — Maßanfertigung / in-house workshop
+ *   6. OnlineShopTeaser  — 750+ Produkte, six sub-category tiles
+ *   7. LocationsTeaser   — four Sanimotion stores
+ *   8. PartnerStores     — Meisterschuh Berlin (partner)
+ *   9. LogoWall          — Markenpartner brands (Bauerfeind, Juzo, …)
+ *  10. KontaktTermin     — phone, email, hours, CTAs + Google Map
  */
+"use client";
+import { useEffect } from "react";
+import { useLocation } from "react-router";
 import type { Route } from "./+types/home";
-import { homeContent } from "~/content/pages/home";
+import { getHomeContent } from "~/content/pages/home";
+import { useLocale } from "~/i18n/locale";
 import { HeroPrimary } from "~/components/sections/HeroPrimary";
 import { IconGrid } from "~/components/sections/IconGrid";
-import { ServicePair } from "~/components/sections/ServicePair";
 import { AboutSnippet } from "~/components/sections/AboutSnippet";
 import { FeatureCards } from "~/components/sections/FeatureCards";
-import { LogoWall } from "~/components/sections/LogoWall";
+import { CraftBand } from "~/components/sections/CraftBand";
+import { OnlineShopTeaser } from "~/components/sections/OnlineShopTeaser";
 import { LocationsTeaser } from "~/components/sections/LocationsTeaser";
-import { KontaktTermin } from "~/components/sections/KontaktTermin";
+import { PartnerStores } from "~/components/sections/PartnerStores";
 
 export function meta(_: Route.MetaArgs) {
+  // Meta runs on the server before locale is known; default to DE.
+  const content = getHomeContent("de");
   return [
-    { title: homeContent.meta.title },
-    { name: "description", content: homeContent.meta.description },
-    { name: "language", content: "de" },
+    { title: content.meta.title },
+    { name: "description", content: content.meta.description },
   ];
 }
 
-/*
- * RR7 loader — returns the validated typed content. SSR'd, so no client
- * fetch waterfall. When a CMS replaces /content modules, only this
- * function changes.
- */
-export async function loader() {
-  return { content: homeContent };
-}
+export default function Home() {
+  const locale = useLocale();
+  const content = getHomeContent(locale);
+  const location = useLocation();
 
-export default function Home({ loaderData }: Route.ComponentProps) {
-  const { content } = loaderData;
+  // Cross-page hash links (e.g. /#standorte from the navbar) need an
+  // explicit scroll: ScrollRestoration handles fresh navigations, but a
+  // hash-only update while already on "/" doesn't trigger one. Re-running
+  // on hash change covers both cases. After scrolling, strip the hash
+  // from the URL so deep-link targets stay invisible to the user.
+  useEffect(() => {
+    if (!location.hash) return;
+    const el = document.getElementById(location.hash.slice(1));
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(null, "", location.pathname + location.search);
+  }, [location.hash, location.pathname, location.search]);
+
   return (
     <>
       <HeroPrimary content={content.hero} />
-      <IconGrid content={content.products} id="produkte" />
-      <ServicePair content={content.services} />
       <AboutSnippet content={content.about} />
       <FeatureCards content={content.features} />
-      <LogoWall content={content.partners} />
+      <IconGrid content={content.products} id="produkte" />
+      <CraftBand content={content.craft} />
+      <OnlineShopTeaser content={content.shop} />
       <LocationsTeaser content={content.locations} />
-      <KontaktTermin content={content.contact} />
+      <PartnerStores content={content.partnerStores} />
     </>
   );
 }

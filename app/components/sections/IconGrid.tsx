@@ -1,15 +1,14 @@
 /*
- * IconGrid — generic icon-card grid.
+ * IconGrid — product/category card grid.
  *
- * What: Eyebrow + section title above a responsive grid of icon cards
- * (icon + title + 1-line description, optionally a deep link). 1 col on
- * mobile, 2 cols from sm, 3 cols from md, 3-4 cols on lg depending on
- * card count. Reveal-on-scroll with light child stagger.
+ * Apple-style card: a product photo on a soft-tinted surface at the top,
+ * then icon + title + description below. The image is matched against
+ * the item's href anchor (e.g. /produkte#einlagen → einlagen.png) so
+ * the content schema stays a pure-text contract; image-mapping is the
+ * component's concern.
  *
- * Why: This is the workhorse "what we offer" block. On the Sanimotion
- * homepage it renders six product categories (Einlagen, Schuhe,
- * Kompressionsstrümpfe, Orthesen, Prothesen, Bandagen). The component
- * stays generic so the same primitive can power Leistungen pages later.
+ * On the homepage this renders six product categories. The component
+ * stays generic enough to power any /leistungen-style grid later.
  */
 import { Container } from "~/components/primitives/Container";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
@@ -20,7 +19,55 @@ import { Icon } from "~/components/primitives/Icon";
 import { SmartLink } from "~/components/primitives/SmartLink";
 import type { IconGridContent } from "~/schemas/content";
 import { cn } from "~/lib/cn";
-import backdropUrl from "~/images/sani-2.jpg";
+
+// Hero images sourced from each product detail page so the teaser tile
+// matches what visitors see at the top of the destination page.
+import einlagen from "~/images/einlagen/einlagen-teaser.png";
+import schuhe from "~/images/schuhe-detail/schuhe-hero.jpeg";
+import kompression from "~/images/kompressionsstruempfe/kompressionsstruempfe-hero.png";
+import orthesen from "~/images/orthesen/orthesen-hero.png";
+import prothesen from "~/images/prothesen/prothesen-hero.png";
+import bandagen from "~/images/bandagen/medizinische-bandagen-hero.png";
+import reha from "~/images/reha-technik/reha-technik-hero.png";
+import skoliose from "~/images/skoliose-korsett/skoliose-korsett-hero.gif";
+
+// Image key → product image. Keys are short slugs shared with
+// content/pages/produkte.ts and the dedicated detail routes.
+const PRODUCT_IMAGES: Record<string, string> = {
+  einlagen,
+  schuhe,
+  kompression,
+  orthesen,
+  prothesen,
+  bandagen,
+  reha,
+  skoliose,
+};
+
+// Map dedicated detail-page paths → image key. Lets the home Produkte
+// teaser link straight to the detail page (matching the navbar) while
+// still resolving the right photo.
+const PATH_TO_IMAGE_KEY: Record<string, string> = {
+  "/orthopaedische-einlagen": "einlagen",
+  "/orthopaedische-schuhe": "schuhe",
+  "/kompressionsstruempfe": "kompression",
+  "/orthesen": "orthesen",
+  "/prothesen": "prothesen",
+  "/medizinische-bandagen": "bandagen",
+  "/reha-technik": "reha",
+  "/skoliose-korsett": "skoliose",
+};
+
+// Resolve an image key from any supported href shape:
+//   "/produkte#einlagen"      → "einlagen" (anchor)
+//   "/orthopaedische-einlagen" → "einlagen" (dedicated path)
+function imageKeyOf(href: string | undefined): string | undefined {
+  if (!href) return undefined;
+  const hashAt = href.lastIndexOf("#");
+  if (hashAt >= 0) return href.slice(hashAt + 1);
+  const pathOnly = href.split("?")[0];
+  return PATH_TO_IMAGE_KEY[pathOnly];
+}
 
 type IconGridProps = {
   content: IconGridContent;
@@ -29,8 +76,6 @@ type IconGridProps = {
 };
 
 export function IconGrid({ content, id }: IconGridProps) {
-  // Choose column count by item count so 6 cards balance into 3, 4 into 4,
-  // 3 into 3, etc. Avoids a single ragged orphan in the last row.
   const lgCols =
     content.items.length % 4 === 0
       ? "lg:grid-cols-4"
@@ -39,75 +84,74 @@ export function IconGrid({ content, id }: IconGridProps) {
         : "lg:grid-cols-3";
 
   return (
-    <Section tone="canvas" id={id} className="relative overflow-hidden">
-      {/* Decorative backdrop image — workshop close-up at very low opacity,
-          masked to fade into the canvas at the edges. Sits behind the
-          content and is hidden from a11y. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          maskImage:
-            "radial-gradient(ellipse at top right, black 0%, transparent 65%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse at top right, black 0%, transparent 65%)",
-        }}
-      >
-        <img
-          src={backdropUrl}
-          alt=""
-          aria-hidden
-          className="rounded-card absolute -top-12 right-[-10%] h-[28rem] w-[40rem] -rotate-3 object-cover opacity-10 blur-[2px] lg:h-[36rem] lg:w-[52rem]"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-
-      <Container className="relative">
-        <Reveal className="max-w-[32ch]">
+    <Section tone="canvas">
+      <Container>
+        <Reveal
+          id={id}
+          className="mx-auto max-w-[60ch] scroll-mt-24 text-center lg:scroll-mt-28"
+        >
           <Eyebrow>{content.eyebrow}</Eyebrow>
-          <Heading as="h2" size="display-md" className="mt-6">
+          <Heading as="h2" size="display-md" className="mt-6 text-balance">
             {content.title}
           </Heading>
         </Reveal>
 
         <ul
           className={cn(
-            "mt-16 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:mt-24 lg:gap-y-16",
+            "mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:mt-24 lg:gap-8",
             lgCols,
           )}
         >
           {content.items.map((item, i) => {
-            // Card body — `group` enables coordinated hover state so the
-            // icon shifts to accent and the title nudges right when the
-            // whole card is hovered (Qonto-style micro-interaction).
+            const image = PRODUCT_IMAGES[imageKeyOf(item.href) ?? ""];
+
             const body = (
-              <>
-                <Icon
-                  name={item.icon}
-                  size={28}
-                  className="text-ink duration-base group-hover:text-accent transition-colors"
-                />
-                <h3 className="text-heading-md text-ink duration-base mt-6 font-semibold transition-transform group-hover:translate-x-1">
-                  {item.title}
-                </h3>
-                <p className="text-body-md text-ink-muted mt-3">
-                  {item.description}
-                </p>
-              </>
+              <article className="group border-hairline bg-surface rounded-card hover:border-ink/20 flex h-full flex-col overflow-hidden border transition-colors">
+                {/* Image plate — full-bleed hero photo from the detail page. */}
+                <div className="bg-muted relative aspect-square overflow-hidden">
+                  {image ? (
+                    <img
+                      src={image}
+                      alt=""
+                      aria-hidden
+                      className="ease-apple absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Icon
+                        name={item.icon}
+                        size={40}
+                        className="text-ink-subtle"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Body */}
+                <div className="flex flex-1 flex-col p-6 lg:p-8">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <Icon
+                      name={item.icon}
+                      size={18}
+                      className="text-ink-subtle group-hover:text-ink duration-base shrink-0 transition-colors"
+                    />
+                    <h3 className="text-heading-md text-ink min-w-0 font-semibold tracking-tight break-words hyphens-auto">
+                      {item.title}
+                    </h3>
+                  </div>
+                  <p className="text-body-md text-ink-muted mt-3 flex-1">
+                    {item.description}
+                  </p>
+                </div>
+              </article>
             );
 
             return (
-              <Reveal
-                as="li"
-                key={item.title}
-                delay={i * 0.06}
-                // Hairline becomes accent-tinted on hover — a Qonto-style
-                // signal of interactivity without a boxy hover-card.
-                className="group border-hairline duration-base hover:border-accent border-t pt-8 transition-colors"
-              >
+              <Reveal as="li" key={item.title} delay={i * 0.05}>
                 {item.href ? (
-                  <SmartLink href={item.href} className="block">
+                  <SmartLink href={item.href} className="block h-full">
                     {body}
                   </SmartLink>
                 ) : (

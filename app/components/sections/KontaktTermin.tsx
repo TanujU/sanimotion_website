@@ -10,10 +10,11 @@
  * contact details and a visible map so visitors can choose between
  * calling, emailing, booking online, or simply seeing where to walk in.
  *
- * Privacy: the map is an OpenStreetMap iframe — no Google JS, no cookies,
- * no consent banner needed (per Locked Decision S11).
+ * Map: Google Maps iframe embed. The mapEmbedUrl is supplied by the
+ * content module so the source can be swapped without touching this
+ * component.
  */
-import { Phone, Mail, Clock, ExternalLink } from "lucide-react";
+import { Phone, Mail, Clock, MapPin } from "lucide-react";
 import { Container } from "~/components/primitives/Container";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
 import { Heading } from "~/components/primitives/Heading";
@@ -21,7 +22,9 @@ import { Section } from "~/components/primitives/Section";
 import { Reveal } from "~/components/primitives/Reveal";
 import { Button } from "~/components/primitives/Button";
 import { SmartLink } from "~/components/primitives/SmartLink";
+import { MapEmbed } from "~/components/sections/MapEmbed";
 import type { ContactContent } from "~/schemas/content";
+import doctolibLogo from "~/images/brand/doctolib-white.png";
 
 type KontaktTerminProps = {
   content: ContactContent;
@@ -55,8 +58,26 @@ export function KontaktTermin({ content }: KontaktTerminProps) {
             </p>
 
             {/* Contact rows — phone / email / hours. Phone + email are
-                semantic links so they "just work" on mobile devices. */}
+                semantic links so they "just work" on mobile devices.
+                Optional address row at the top, present on per-location
+                pages. Hours can be a single string or a list — when a
+                list, each line stacks vertically. */}
             <ul className="mt-10 space-y-4">
+              {content.address && (
+                <li className="flex items-start gap-4">
+                  <MapPin
+                    size={20}
+                    strokeWidth={1.5}
+                    aria-hidden
+                    className="text-accent mt-1 shrink-0"
+                  />
+                  <span className="text-body-lg text-ink-muted not-italic">
+                    {content.address.line1}
+                    <br />
+                    {content.address.line2}
+                  </span>
+                </li>
+              )}
               <li className="flex items-center gap-4">
                 <Phone
                   size={20}
@@ -85,37 +106,43 @@ export function KontaktTermin({ content }: KontaktTerminProps) {
                   {content.email.label}
                 </SmartLink>
               </li>
-              <li className="flex items-center gap-4">
+              <li className="flex items-start gap-4">
                 <Clock
                   size={20}
                   strokeWidth={1.5}
                   aria-hidden
-                  className="text-accent shrink-0"
+                  className="text-accent mt-1 shrink-0"
                 />
-                <span className="text-body-lg text-ink-muted">
-                  {content.hours}
-                </span>
+                {Array.isArray(content.hours) ? (
+                  <ul className="text-body-lg text-ink-muted space-y-1">
+                    {content.hours.map((row) => (
+                      <li key={row}>{row}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span className="text-body-lg text-ink-muted">
+                    {content.hours}
+                  </span>
+                )}
               </li>
             </ul>
 
-            {/* CTAs — primary first, secondary ghost button second. */}
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:gap-4">
+            {/* Primary CTA — Doctolib appointment booking. */}
+            <div className="mt-10">
               <Button
                 href={content.primaryCta.href}
                 size="lg"
                 aria-label={content.primaryCta.ariaLabel}
               >
                 {content.primaryCta.label}
+                <img
+                  src={doctolibLogo}
+                  alt="Doctolib"
+                  className="ml-1 h-5 w-auto"
+                  loading="lazy"
+                  decoding="async"
+                />
               </Button>
-              {content.secondaryCta && (
-                <Button
-                  href={content.secondaryCta.href}
-                  size="lg"
-                  variant="secondary"
-                >
-                  {content.secondaryCta.label}
-                </Button>
-              )}
             </div>
           </Reveal>
 
@@ -126,28 +153,54 @@ export function KontaktTermin({ content }: KontaktTerminProps) {
               list). On mobile we keep an aspect-ratio so the map doesn't
               collapse. */}
           <Reveal delay={0.08} className="lg:col-span-7 lg:self-stretch">
-            <div className="border-hairline bg-muted rounded-card relative h-full min-h-[20rem] overflow-hidden border">
-              <iframe
-                title="Karte: Sanimotion-Standorte in Berlin und Königs Wusterhausen"
-                src={content.mapEmbedUrl}
-                // Mobile: aspect-4/3 keeps the box readable. From lg the
-                // iframe is positioned absolute so it fills the
-                // contact-driven column height.
-                className="aspect-4/3 h-full w-full lg:absolute lg:inset-0 lg:aspect-auto"
-                loading="lazy"
-                // OpenStreetMap embed is sandboxed; allow basic scripting
-                // so the tile interactions still work.
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              {/* "Open in OSM" link — discloses the data source per
-                  OpenStreetMap's attribution requirement. */}
-              <SmartLink
-                href={content.mapHref}
-                className="rounded-pill bg-canvas/90 text-caption text-ink-muted duration-fast hover:text-ink absolute right-3 bottom-3 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 backdrop-blur-sm transition-colors"
-              >
-                Karte vergrößern
-                <ExternalLink size={12} strokeWidth={1.5} aria-hidden />
-              </SmartLink>
+            <div className="flex h-full flex-col gap-4">
+              <div className="border-hairline bg-muted rounded-card relative min-h-[24rem] flex-1 overflow-hidden border">
+                <MapEmbed
+                  embedUrl={content.mapEmbedUrl}
+                  title="Karte: Sanimotion- und Meisterschuh-Standorte in Berlin"
+                  routeHref={content.mapHref}
+                  address={
+                    content.address
+                      ? {
+                          line1: content.address.line1,
+                          line2: content.address.line2,
+                        }
+                      : undefined
+                  }
+                />
+              </div>
+              {/* Location legend — lists all six Sanimotion + partner
+                  Meisterschuh stores so the map's pins are unambiguous.
+                  Hidden on per-location pages where the map is focused
+                  on a single store. */}
+              {content.showLegend !== false && (
+              <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-caption text-ink-muted font-mono tracking-wide">
+                <li className="flex items-center gap-2">
+                  <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#dc2626]" />
+                  Sanimotion · Kreuzberg
+                </li>
+                <li className="flex items-center gap-2">
+                  <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#dc2626]" />
+                  Sanimotion · Spandau
+                </li>
+                <li className="flex items-center gap-2">
+                  <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#dc2626]" />
+                  Sanimotion · Zehlendorf
+                </li>
+                <li className="flex items-center gap-2">
+                  <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#dc2626]" />
+                  Sanimotion · Königs Wusterhausen
+                </li>
+                <li className="flex items-center gap-2">
+                  <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#b91c1c]" />
+                  Meisterschuh · Westend
+                </li>
+                <li className="flex items-center gap-2">
+                  <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#b91c1c]" />
+                  Meisterschuh · Kreuzberg
+                </li>
+              </ul>
+              )}
             </div>
           </Reveal>
         </div>

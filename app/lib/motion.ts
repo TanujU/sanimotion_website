@@ -16,6 +16,11 @@ import type { Variants } from "framer-motion";
 // cubic-bezier definition.
 export const easeApple: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+// Slower out-expo for hero text — a more deliberate, cinematic feel.
+export const easeAppleLong: [number, number, number, number] = [
+  0.16, 1, 0.3, 1,
+];
+
 // Default reveal: fade + small upward translate. Used by <Reveal>.
 export const fadeUp: Variants = {
   hidden: { opacity: 0, y: 16 },

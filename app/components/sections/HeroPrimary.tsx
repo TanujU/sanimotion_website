@@ -19,19 +19,24 @@ import { Heading } from "~/components/primitives/Heading";
 import { Button } from "~/components/primitives/Button";
 import type { HeroContent } from "~/schemas/content";
 import { fadeUp, stagger, easeApple } from "~/lib/motion";
-import heroImageUrl from "~/images/sani-1.png";
+import heroImageUrl from "~/images/hero/sanimotion-hero-1.png";
+import doctolibLogo from "~/images/brand/doctolib-white.png";
 
 type HeroPrimaryProps = {
   content: HeroContent;
+  // Optional image override — used by per-location pages to swap in the
+  // store's storefront photo. Falls back to the default brand hero image.
+  imageUrl?: string;
+  imageAlt?: string;
 };
 
-// Native dimensions of sani-1.png (800 × 800) — used for explicit
-// width/height attributes so the browser reserves the right box and
-// avoids cumulative layout shift on first paint.
+// Native dimensions of sanimotion-hero-1.png (800 × 800, square).
 const HERO_IMG_W = 800;
 const HERO_IMG_H = 800;
 
-export function HeroPrimary({ content }: HeroPrimaryProps) {
+export function HeroPrimary({ content, imageUrl, imageAlt }: HeroPrimaryProps) {
+  const src = imageUrl ?? heroImageUrl;
+  const alt = imageAlt ?? "Persönliche Beratung im Sanimotion-Sanitätshaus";
   return (
     // Top padding clears the fixed Navbar (h-20 mobile, h-24 lg). Bottom
     // padding is tighter than Section's default so the hero flows into
@@ -85,6 +90,13 @@ export function HeroPrimary({ content }: HeroPrimaryProps) {
             >
               <Button href={content.primaryCta.href} size="lg">
                 {content.primaryCta.label}
+                <img
+                  src={doctolibLogo}
+                  alt="Doctolib"
+                  className="ml-1 h-5 w-auto"
+                  loading="eager"
+                  decoding="async"
+                />
               </Button>
               {content.secondaryCta && (
                 <Button
@@ -122,13 +134,15 @@ export function HeroPrimary({ content }: HeroPrimaryProps) {
             }}
             className="lg:col-span-5"
           >
-            <div className="rounded-card bg-muted relative overflow-hidden">
+            {/* Source is 800×800 — plenty of resolution for a generous
+                square hero card. Caps at ~32rem so it never upscales. */}
+            <div className="rounded-card bg-muted shadow-soft relative mx-auto aspect-square w-full max-w-lg overflow-hidden">
               <img
-                src={heroImageUrl}
-                alt="Persönliche Beratung im Sanimotion-Sanitätshaus"
+                src={src}
+                alt={alt}
                 width={HERO_IMG_W}
                 height={HERO_IMG_H}
-                className="h-auto w-full object-cover"
+                className="ease-apple absolute inset-0 h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
                 // Above the fold — load eagerly + flag as high-priority
                 // so it shares LCP attention with the headline text.
                 loading="eager"

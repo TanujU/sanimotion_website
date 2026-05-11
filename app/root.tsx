@@ -32,13 +32,23 @@ import "./styles/globals.css";
 import { Navbar } from "~/components/layout/Navbar";
 import { MobileMenu } from "~/components/layout/MobileMenu";
 import { Footer } from "~/components/layout/Footer";
+// Global "page tail" — brand-partner wall + contact + map appear on every
+// route by request. Sourced from the home content module (single source of
+// truth for partners and contact details).
+import { LogoWall } from "~/components/sections/LogoWall";
+import { KontaktTermin } from "~/components/sections/KontaktTermin";
+import { Analytics } from "~/components/analytics/Analytics";
+import { ConsentBanner } from "~/components/analytics/ConsentBanner";
+import { getHomeContent } from "~/content/pages/home";
+import { useLocale } from "~/i18n/locale";
+import { getStrings } from "~/i18n/strings";
 
 /*
  * Document-level <link> tags. We deliberately do NOT preconnect to Google
  * Fonts — fonts are bundled. Favicon is the only static link for now.
  */
 export const links: Route.LinksFunction = () => [
-  { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+  { rel: "icon", type: "image/jpeg", href: "/favicon.jpeg" },
 ];
 
 /*
@@ -73,20 +83,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
  * past the navigation directly to <main> (WCAG 2.4.1).
  */
 export default function App() {
+  const locale = useLocale();
+  const strings = getStrings(locale);
+  const home = getHomeContent(locale);
   return (
     <>
       <a
         href="#main-content"
         className="focus:rounded-pill focus:bg-ink focus:text-canvas sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2"
       >
-        Zum Inhalt springen
+        {strings.skipToContent}
       </a>
       <Navbar />
       <MobileMenu />
       <main id="main-content">
         <Outlet />
+        <LogoWall content={home.partners} />
+        <KontaktTermin content={home.contact} />
       </main>
       <Footer />
+      <Analytics />
+      <ConsentBanner />
     </>
   );
 }

@@ -20,14 +20,13 @@ import { Reveal } from "~/components/primitives/Reveal";
 import { Button } from "~/components/primitives/Button";
 import { CountUp } from "~/components/primitives/CountUp";
 import type { AboutSnippetContent } from "~/schemas/content";
-import aboutImageUrl from "~/images/sani-2.jpg";
+import aboutImageUrl from "~/images/workshop/about-family.jpg";
 
 type AboutSnippetProps = {
   content: AboutSnippetContent;
 };
 
-// Native dimensions of sani-2.jpg (2560 × 1709) — lets the browser
-// reserve the right aspect ratio and prevents layout shift.
+// Native dimensions of about-family.jpg (2560 × 1709, landscape).
 const ABOUT_IMG_W = 2560;
 const ABOUT_IMG_H = 1709;
 
@@ -50,13 +49,13 @@ export function AboutSnippet({ content }: AboutSnippetProps) {
           {/* Image — fills 6/12 cols on lg. Soft hairline-rounded card,
               muted background placeholder while it decodes. */}
           <Reveal className="lg:col-span-6">
-            <div className="rounded-card bg-muted overflow-hidden">
+            <div className="rounded-card bg-muted shadow-soft group overflow-hidden">
               <img
                 src={aboutImageUrl}
-                alt="Sanimotion-Werkstatt: traditionelle Handwerkskunst und moderne Technik"
+                alt="Sanimotion — persönliche Beratung im Sanitätshaus"
                 width={ABOUT_IMG_W}
                 height={ABOUT_IMG_H}
-                className="aspect-3/2 h-auto w-full object-cover"
+                className="ease-apple aspect-[3/2] h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                 loading="lazy"
                 decoding="async"
               />

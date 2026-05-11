@@ -17,20 +17,46 @@ export const linkSchema = z.object({
   label: z.string(),
   href: z.string(), // relative or absolute; SmartLink decides target
 });
-export type LinkContent = z.infer<typeof linkSchema>;
 
 export const ctaSchema = linkSchema.extend({
   // Optional accessible label for buttons whose visible text is too terse.
   ariaLabel: z.string().optional(),
 });
-export type CtaContent = z.infer<typeof ctaSchema>;
 
 // Site-wide content (nav, footer) ------------------------------------------
+
+// Recursive: a NavChild can itself contain children, used for two-level
+// dropdowns (e.g. Produkte → Orthesen → Fuß-Orthese).
+export type NavChild = {
+  label: string;
+  href: string;
+  description?: string;
+  icon?: string;
+  children?: NavChild[];
+};
+
+export const navChildSchema: z.ZodType<NavChild> = z.lazy(() =>
+  z.object({
+    label: z.string(),
+    href: z.string(),
+    // Optional one-line subtitle shown beneath the label in dropdown panels
+    // (e.g. neighborhood for a location, or short description for a category).
+    description: z.string().optional(),
+    // Optional Lucide icon name — rendered to the left of the label.
+    icon: z.string().optional(),
+    // Optional sub-children — when present the row renders a flyout submenu.
+    children: z.array(navChildSchema).optional(),
+  }),
+);
 
 export const navItemSchema = z.object({
   label: z.string(),
   href: z.string(),
+  // When present, the item renders as a dropdown trigger instead of a
+  // simple link. Top-level href still navigates on direct click / Enter.
+  children: z.array(navChildSchema).optional(),
 });
+export type NavItem = z.infer<typeof navItemSchema>;
 
 export const siteSchema = z.object({
   brand: z.object({
@@ -84,21 +110,6 @@ export const iconGridSchema = z.object({
 });
 export type IconGridContent = z.infer<typeof iconGridSchema>;
 
-// ServicePair — two highlighted services side-by-side (e.g. Hausbesuch +
-// Rezept-Upload on Sanimotion's homepage).
-export const servicePairItemSchema = z.object({
-  icon: z.string(),
-  title: z.string(),
-  description: z.string(),
-  cta: ctaSchema,
-});
-export const servicePairSchema = z.object({
-  eyebrow: z.string(),
-  title: z.string(),
-  items: z.array(servicePairItemSchema).length(2),
-});
-export type ServicePairContent = z.infer<typeof servicePairSchema>;
-
 // AboutSnippet — short company description block with an optional headline
 // metric ("30+ Jahre Erfahrung") and call to learn more.
 export const aboutSnippetSchema = z.object({
@@ -148,56 +159,72 @@ export const contactSchema = z.object({
   eyebrow: z.string(),
   title: z.string(),
   lede: z.string(),
+  // Optional postal address (used on per-location pages so the contact
+  // block can show the specific store's address). Home page omits it.
+  address: z
+    .object({ line1: z.string(), line2: z.string() })
+    .optional(),
   phone: z.object({ label: z.string(), href: z.string() }),
   email: z.object({ label: z.string(), href: z.string() }),
-  hours: z.string(),
+  hours: z.union([z.string(), z.array(z.string()).min(1)]),
   primaryCta: ctaSchema,
   secondaryCta: ctaSchema.optional(),
   // OpenStreetMap embed URL — chosen over Google Maps for GDPR cleanliness.
   mapEmbedUrl: z.string(),
   mapHref: z.string(),
+  // Optional override for the legend rendered below the map. The home
+  // page lists all six pins; per-location pages typically hide it.
+  showLegend: z.boolean().optional(),
 });
 export type ContactContent = z.infer<typeof contactSchema>;
 
-// CtaBand — closing CTA on inverse tone.
-export const ctaBandSchema = z.object({
+// CraftBand — in-house workshop call-out (Maßanfertigung).
+export const craftSchema = z.object({
+  eyebrow: z.string(),
+  title: z.string(),
+  body: z.string(),
+  bullets: z.array(z.string()).min(3).max(6),
+  cta: ctaSchema,
+});
+export type CraftContent = z.infer<typeof craftSchema>;
+
+// OnlineShopTeaser — "750+ Produkte" with sub-category tiles.
+export const shopTeaserSchema = z.object({
+  eyebrow: z.string(),
   title: z.string(),
   lede: z.string(),
   cta: ctaSchema,
+  categories: z
+    .array(
+      z.object({
+        slug: z.string(),
+        label: z.string(),
+        href: z.string(),
+      }),
+    )
+    .min(4)
+    .max(8),
 });
-export type CtaBandContent = z.infer<typeof ctaBandSchema>;
+export type ShopTeaserContent = z.infer<typeof shopTeaserSchema>;
 
-// Reserved schemas — kept available for future pages even though the home
-// page no longer uses them. Removing them would force a re-add later.
-export const processStepSchema = z.object({
-  number: z.string(),
-  title: z.string(),
-  description: z.string(),
-});
-export const processStepsSchema = z.object({
+// PartnerStores — Meisterschuh Berlin (or any retail-partner) band.
+export const partnerStoresSchema = z.object({
   eyebrow: z.string(),
   title: z.string(),
-  steps: z.array(processStepSchema).length(3),
+  body: z.string(),
+  stores: z
+    .array(
+      z.object({
+        slug: z.string(),
+        name: z.string(),
+        address: z.string(),
+        city: z.string(),
+      }),
+    )
+    .min(1)
+    .max(4),
 });
-export type ProcessStepsContent = z.infer<typeof processStepsSchema>;
-
-export const testimonialSchema = z.object({
-  quote: z.string(),
-  author: z.string(),
-  role: z.string(),
-});
-export type TestimonialContent = z.infer<typeof testimonialSchema>;
-
-export const caseStudyFeaturedSchema = z.object({
-  eyebrow: z.string(),
-  metricValue: z.string(),
-  metricLabel: z.string(),
-  title: z.string(),
-  summary: z.string(),
-  tags: z.array(z.string()),
-  cta: ctaSchema,
-});
-export type CaseStudyFeaturedContent = z.infer<typeof caseStudyFeaturedSchema>;
+export type PartnerStoresContent = z.infer<typeof partnerStoresSchema>;
 
 // Aggregate page schema ----------------------------------------------------
 
@@ -208,11 +235,35 @@ export const homePageSchema = z.object({
   }),
   hero: heroSchema,
   products: iconGridSchema,
-  services: servicePairSchema,
   about: aboutSnippetSchema,
   features: featuresSchema,
+  craft: craftSchema,
+  shop: shopTeaserSchema,
+  partnerStores: partnerStoresSchema,
   partners: logoWallSchema,
   locations: locationsTeaserSchema,
   contact: contactSchema,
 });
 export type HomePageContent = z.infer<typeof homePageSchema>;
+
+// Per-location page (Sanitätshaus Kreuzberg / Spandau / …). Mirrors the
+// home composition but contact + hero are location-specific. CraftBand is
+// optional because only Kreuzberg houses the workshop.
+export const locationPageSchema = z.object({
+  meta: z.object({
+    title: z.string(),
+    description: z.string(),
+  }),
+  // Slug — used to look up the storefront photo for the hero.
+  slug: z.string(),
+  city: z.string(),
+  hero: heroSchema,
+  about: aboutSnippetSchema,
+  features: featuresSchema,
+  products: iconGridSchema,
+  craft: craftSchema.optional(),
+  shop: shopTeaserSchema,
+  partners: logoWallSchema,
+  contact: contactSchema,
+});
+export type LocationPageContent = z.infer<typeof locationPageSchema>;
