@@ -44,17 +44,27 @@ export function NavAccount({ invert = false }: { invert?: boolean }) {
   }, [open]);
 
   if (status !== "authenticated" || !user) {
+    const portalUrl = import.meta.env.VITE_PORTAL_URL as string | undefined;
+    const loginHref = portalUrl ? `${portalUrl}/anmelden` : "/anmelden";
+    const linkClass = cn(
+      "rounded-pill inline-flex h-9 items-center gap-2 px-4 text-caption font-medium tracking-wide transition-colors",
+      invert ? "text-canvas hover:bg-canvas/10" : "text-ink hover:bg-muted",
+    );
+
+    // When the portal is on another origin, use a plain <a> for a same-tab
+    // hard navigation. SmartLink defaults externals to target="_blank",
+    // which would break the redirect-back flow.
+    if (portalUrl) {
+      return (
+        <a href={loginHref} className={linkClass} aria-label={strings.signedOutLabel}>
+          <UserIcon size={16} strokeWidth={1.75} aria-hidden />
+          <span>{strings.signedOutLabel}</span>
+        </a>
+      );
+    }
+
     return (
-      <SmartLink
-        href="/anmelden"
-        className={cn(
-          "rounded-pill inline-flex h-9 items-center gap-2 px-4 text-caption font-medium tracking-wide transition-colors",
-          invert
-            ? "text-canvas hover:bg-canvas/10"
-            : "text-ink hover:bg-muted",
-        )}
-        aria-label={strings.signedOutLabel}
-      >
+      <SmartLink href={loginHref} className={linkClass} aria-label={strings.signedOutLabel}>
         <UserIcon size={16} strokeWidth={1.75} aria-hidden />
         <span>{strings.signedOutLabel}</span>
       </SmartLink>
