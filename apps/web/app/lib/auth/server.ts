@@ -40,26 +40,32 @@ export function getServerClient(
   return createServerClient(url, anonKey, { cookies, cookieOptions });
 }
 
-// Throws a redirect to /anmelden (preserving the current path as return_to)
-// if there's no authenticated user. Returns { user, supabase, headers } on
-// success so the caller can keep querying with the same client and forward
-// any refreshed cookies on the response.
+// Throws a redirect to the auth portal (preserving the full current URL as
+// return_to) if there's no authenticated user. Returns { user, supabase,
+// headers } on success so the caller can keep querying with the same client
+// and forward any refreshed cookies on the response.
+//
+// VITE_PORTAL_URL controls where the portal lives:
+//   dev:  http://localhost:5174  (run the portal repo on port 5174)
+//   prod: https://kunden.sanimotion.com
+// If unset, falls back to an in-app /anmelden redirect (legacy behavior).
 export async function requireUser(request: Request) {
   const headers = new Headers();
   const supabase = getServerClient(request, headers);
-  if (!supabase) throw redirect("/anmelden", { headers });
+  const portalUrl = import.meta.env.VITE_PORTAL_URL as string | undefined;
+  const buildLoginRedirect = (returnTo: string) =>
+    portalUrl
+      ? `${portalUrl}/anmelden?return_to=${encodeURIComponent(returnTo)}`
+      : `/anmelden?return_to=${encodeURIComponent(returnTo)}`;
+
+  if (!supabase) throw redirect(buildLoginRedirect(request.url), { headers });
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    const url = new URL(request.url);
-    const returnTo = url.pathname + url.search;
-    throw redirect(
-      `/anmelden?return_to=${encodeURIComponent(returnTo)}`,
-      { headers },
-    );
+    throw redirect(buildLoginRedirect(request.url), { headers });
   }
 
   return { user, supabase, headers };
