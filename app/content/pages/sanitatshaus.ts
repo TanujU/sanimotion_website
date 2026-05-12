@@ -116,20 +116,6 @@ const PRODUCTS_DE = [
       "Wir passen medizinische Bandagen aller Art passgenau auf Ihren Körper an.",
     href: "/produkte#bandagen",
   },
-  {
-    icon: "Accessibility",
-    title: "Reha-Technik",
-    description:
-      "Mobilitätshilfen, Rollatoren und Reha-Produkte für mehr Selbstständigkeit im Alltag.",
-    href: "/produkte#reha",
-  },
-  {
-    icon: "Stethoscope",
-    title: "Skoliose-Korsett",
-    description:
-      "Individuell angefertigte Korsette zur konservativen Behandlung der Skoliose.",
-    href: "/produkte#skoliose",
-  },
 ];
 
 const PRODUCTS_EN = [
@@ -174,24 +160,10 @@ const PRODUCTS_EN = [
     description: "We fit medical bandages of all kinds precisely to your body.",
     href: "/produkte#bandagen",
   },
-  {
-    icon: "Accessibility",
-    title: "Rehab equipment",
-    description:
-      "Mobility aids, rollators and rehab products for more independence in daily life.",
-    href: "/produkte#reha",
-  },
-  {
-    icon: "Stethoscope",
-    title: "Scoliosis brace",
-    description:
-      "Custom-made corsets for the conservative treatment of scoliosis.",
-    href: "/produkte#skoliose",
-  },
 ];
 
 const FEATURES_DE_DEFAULT = [
-  { icon: "HandHeart", title: "Ausgezeichneter Service" },
+  { icon: "HandHeart", title: "Service mit Qualität" },
   { icon: "MessageCircle", title: "Fachkundig & freundlich" },
   { icon: "Clock", title: "Schnelle Anfertigung" },
   { icon: "BadgeCheck", title: "Hochwertige Markenprodukte" },
@@ -200,7 +172,7 @@ const FEATURES_DE_DEFAULT = [
 ];
 
 const FEATURES_EN_DEFAULT = [
-  { icon: "HandHeart", title: "Outstanding service" },
+  { icon: "HandHeart", title: "Quality service" },
   { icon: "MessageCircle", title: "Expert & friendly" },
   { icon: "Clock", title: "Fast manufacturing" },
   { icon: "BadgeCheck", title: "Premium brand products" },
@@ -282,7 +254,7 @@ const de: Record<LocationKey, LocationPageContent> = {
         "Sanimotion Sanitätshaus Kreuzberg, Blücherstraße 22 in Berlin-Kreuzberg. Persönliche Beratung, Maßanfertigung und eigene Werkstatt — Hausbesuche in ganz Berlin.",
     },
     slug: "kreuzberg",
-    city: "Kreuzberg",
+    city: "Berlin-Kreuzberg",
     hero: {
       eyebrow: "Standort Kreuzberg",
       titleLead: "Ihr Sanitätshaus",
@@ -343,7 +315,7 @@ const de: Record<LocationKey, LocationPageContent> = {
         "Sanimotion Sanitätshaus Spandau, Adamstraße 3 in Berlin-Spandau. Beratung, Anpassung und Hausbesuche im Berliner Westen.",
     },
     slug: "spandau",
-    city: "Spandau",
+    city: "Berlin-Spandau",
     hero: {
       eyebrow: "Standort Spandau",
       titleLead: "Ihr Sanitätshaus",
@@ -392,7 +364,7 @@ const de: Record<LocationKey, LocationPageContent> = {
         "Sanimotion Sanitätshaus Zehlendorf, Martin-Buber-Straße 12 in Berlin-Zehlendorf. Beratung, Anpassung und Hausbesuche im Berliner Süden.",
     },
     slug: "zehlendorf",
-    city: "Zehlendorf",
+    city: "Berlin-Zehlendorf",
     hero: {
       eyebrow: "Standort Zehlendorf",
       titleLead: "Ihr Sanitätshaus",
@@ -506,7 +478,7 @@ const en: Record<LocationKey, LocationPageContent> = {
         "Sanimotion Kreuzberg, Blücherstraße 22. Personal consultation, custom-made products and our in-house workshop — home visits across Berlin.",
     },
     slug: "kreuzberg",
-    city: "Kreuzberg",
+    city: "Berlin-Kreuzberg",
     hero: {
       eyebrow: "Kreuzberg store",
       titleLead: "Your medical store",
@@ -564,7 +536,7 @@ const en: Record<LocationKey, LocationPageContent> = {
         "Sanimotion Spandau, Adamstraße 3. Consultation, fitting and home visits in west Berlin.",
     },
     slug: "spandau",
-    city: "Spandau",
+    city: "Berlin-Spandau",
     hero: {
       eyebrow: "Spandau store",
       titleLead: "Your medical store",
@@ -610,7 +582,7 @@ const en: Record<LocationKey, LocationPageContent> = {
         "Sanimotion Zehlendorf, Martin-Buber-Straße 12. Consultation, fitting and home visits in south Berlin.",
     },
     slug: "zehlendorf",
-    city: "Zehlendorf",
+    city: "Berlin-Zehlendorf",
     hero: {
       eyebrow: "Zehlendorf store",
       titleLead: "Your medical store",

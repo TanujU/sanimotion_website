@@ -35,8 +35,6 @@ export default [
   ),
   route("kompressionsstruempfe", "routes/kompressionsstruempfe.tsx"),
   route("medizinische-bandagen", "routes/medizinische-bandagen.tsx"),
-  route("reha-technik", "routes/reha-technik.tsx"),
-  route("skoliose-korsett", "routes/skoliose-korsett.tsx"),
   route("orthesen", "routes/orthesen.tsx"),
   route("orthesen/fuss-orthese", "routes/orthesen.fuss-orthese.tsx"),
   route(

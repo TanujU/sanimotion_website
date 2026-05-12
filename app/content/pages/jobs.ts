@@ -90,7 +90,7 @@ const de: JobsPageContent = {
     title: "Gesundheit ist unser Antrieb.",
     body: "Gesundheit ist unser Antrieb – und dafür setzen wir uns mit Leidenschaft ein. Seit über 30 Jahren begleiten wir Menschen auf ihrem Weg zu mehr Mobilität und Lebensqualität. Als etabliertes Sanitätshaus verbinden wir traditionelles Handwerk mit modernster Technik und fundiertem Fachwissen. Unser Erfolg basiert auf einem engagierten Team, das täglich sein Bestes gibt, um unseren Kunden erstklassige Beratung, individuelle Lösungen und exzellenten Service zu bieten.",
     strengths: [
-      { icon: "Sparkles", label: "Ausgezeichneter Service" },
+      { icon: "Sparkles", label: "Service mit Qualität" },
       { icon: "MessageCircle", label: "Fachkundige Beratung" },
       { icon: "Clock", label: "Langjährige Erfahrung" },
       { icon: "BadgeCheck", label: "Hochwertige Markenprodukte" },

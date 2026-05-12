@@ -78,7 +78,7 @@ const de: StandortePageContent = {
   locations: [
     {
       slug: "kreuzberg",
-      name: "Kreuzberg",
+      name: "Berlin-Kreuzberg",
       address: {
         line1: "Blücherstraße 22",
         postalCode: "10961",
@@ -102,7 +102,7 @@ const de: StandortePageContent = {
     },
     {
       slug: "spandau",
-      name: "Spandau",
+      name: "Berlin-Spandau",
       address: {
         line1: "Adamstraße 3",
         postalCode: "13595",
@@ -126,7 +126,7 @@ const de: StandortePageContent = {
     },
     {
       slug: "zehlendorf",
-      name: "Zehlendorf",
+      name: "Berlin-Zehlendorf",
       address: {
         line1: "Martin-Buber-Str. 12",
         postalCode: "14163",
@@ -207,7 +207,7 @@ const en: StandortePageContent = {
   locations: [
     {
       slug: "kreuzberg",
-      name: "Kreuzberg",
+      name: "Berlin-Kreuzberg",
       address: {
         line1: "Blücherstraße 22",
         postalCode: "10961",
@@ -231,7 +231,7 @@ const en: StandortePageContent = {
     },
     {
       slug: "spandau",
-      name: "Spandau",
+      name: "Berlin-Spandau",
       address: {
         line1: "Adamstraße 3",
         postalCode: "13595",
@@ -255,7 +255,7 @@ const en: StandortePageContent = {
     },
     {
       slug: "zehlendorf",
-      name: "Zehlendorf",
+      name: "Berlin-Zehlendorf",
       address: {
         line1: "Martin-Buber-Str. 12",
         postalCode: "14163",

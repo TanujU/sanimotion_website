@@ -28,8 +28,6 @@ import kompression from "~/images/kompressionsstruempfe/kompressionsstruempfe-he
 import orthesen from "~/images/orthesen/orthesen-hero.png";
 import prothesen from "~/images/prothesen/prothesen-hero.png";
 import bandagen from "~/images/bandagen/medizinische-bandagen-hero.png";
-import reha from "~/images/reha-technik/reha-technik-hero.png";
-import skoliose from "~/images/skoliose-korsett/skoliose-korsett-hero.gif";
 
 // Image key → product image. Keys are short slugs shared with
 // content/pages/produkte.ts and the dedicated detail routes.
@@ -40,8 +38,6 @@ const PRODUCT_IMAGES: Record<string, string> = {
   orthesen,
   prothesen,
   bandagen,
-  reha,
-  skoliose,
 };
 
 // Map dedicated detail-page paths → image key. Lets the home Produkte
@@ -54,8 +50,6 @@ const PATH_TO_IMAGE_KEY: Record<string, string> = {
   "/orthesen": "orthesen",
   "/prothesen": "prothesen",
   "/medizinische-bandagen": "bandagen",
-  "/reha-technik": "reha",
-  "/skoliose-korsett": "skoliose",
 };
 
 // Resolve an image key from any supported href shape:

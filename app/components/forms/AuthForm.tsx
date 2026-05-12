@@ -165,7 +165,7 @@ export function AuthForm({ mode, content }: AuthFormProps) {
       dob: v.dob,
     });
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: v.email,
       password: v.password,
       options: {
@@ -192,6 +192,15 @@ export function AuthForm({ mode, content }: AuthFormProps) {
       return;
     }
     setSubmitted(true);
+    // When Supabase "Confirm email" is off, signUp returns a session and
+    // the user is logged in immediately — send them straight to the
+    // dashboard. Otherwise stay on the success screen (the success copy
+    // tells them to check their inbox).
+    if (data.session) {
+      setTimeout(() => {
+        navigate("/mein-bereich");
+      }, 600);
+    }
   });
 
   // Type-narrow access to register-only fields.

@@ -177,15 +177,15 @@ export function KontaktTermin({ content }: KontaktTerminProps) {
               <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-caption text-ink-muted font-mono tracking-wide">
                 <li className="flex items-center gap-2">
                   <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#dc2626]" />
-                  Sanimotion · Kreuzberg
+                  Sanimotion · Berlin-Kreuzberg
                 </li>
                 <li className="flex items-center gap-2">
                   <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#dc2626]" />
-                  Sanimotion · Spandau
+                  Sanimotion · Berlin-Spandau
                 </li>
                 <li className="flex items-center gap-2">
                   <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#dc2626]" />
-                  Sanimotion · Zehlendorf
+                  Sanimotion · Berlin-Zehlendorf
                 </li>
                 <li className="flex items-center gap-2">
                   <span aria-hidden className="inline-block size-2 shrink-0 rounded-full bg-[#dc2626]" />

@@ -101,7 +101,7 @@ const de: FingerProthesePageContent = {
     eyebrow: "Unser Versprechen",
     title: "Was uns auszeichnet",
     items: [
-      { icon: "Award", label: "Ausgezeichneter Service" },
+      { icon: "Award", label: "Service mit Qualität" },
       { icon: "Store", label: "Filialgeschäfte & Online-Shop" },
       { icon: "Home", label: "Hausbesuche in ganz Berlin" },
       { icon: "MessageCircle", label: "Fachkundige Beratung" },
@@ -164,7 +164,7 @@ const en: FingerProthesePageContent = {
     eyebrow: "Our promise",
     title: "What sets us apart",
     items: [
-      { icon: "Award", label: "Outstanding service" },
+      { icon: "Award", label: "Quality service" },
       { icon: "Store", label: "Stores & online shop" },
       { icon: "Home", label: "Home visits across Berlin" },
       { icon: "MessageCircle", label: "Expert consultation" },

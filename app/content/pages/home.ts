@@ -73,20 +73,6 @@ const de: HomePageContent = {
           "Wir passen medizinische Bandagen aller Art passgenau auf Ihren Körper an.",
         href: "/medizinische-bandagen",
       },
-      {
-        icon: "Accessibility",
-        title: "Reha-Technik",
-        description:
-          "Rollatoren, Rollstühle und Mobilitätshilfen für mehr Selbstständigkeit im Alltag.",
-        href: "/reha-technik",
-      },
-      {
-        icon: "Stethoscope",
-        title: "Skoliose-Korsett",
-        description:
-          "Individuell angepasste Korsettversorgung zur Korrektur und Stabilisierung der Wirbelsäule.",
-        href: "/skoliose-korsett",
-      },
     ],
   },
 
@@ -103,7 +89,7 @@ const de: HomePageContent = {
     eyebrow: "Warum Sanimotion",
     title: "Was uns auszeichnet.",
     items: [
-      { icon: "HandHeart", title: "Ausgezeichneter Service" },
+      { icon: "HandHeart", title: "Service mit Qualität" },
       { icon: "MessageCircle", title: "Fachkundige Beratung" },
       { icon: "Clock", title: "Langjährige Erfahrung" },
       { icon: "BadgeCheck", title: "Hochwertige Markenprodukte" },
@@ -180,7 +166,7 @@ const de: HomePageContent = {
       },
       {
         slug: "kreuzberg-meisterschuh",
-        name: "Kreuzberg",
+        name: "Berlin-Kreuzberg",
         address: "Bergmannstraße 5",
         city: "10961 Berlin",
       },
@@ -209,7 +195,7 @@ const de: HomePageContent = {
   locations: {
     eyebrow: "Standorte",
     title: "Vier Sanitätshäuser im Großraum Berlin.",
-    cities: ["Kreuzberg", "Spandau", "Zehlendorf", "Königs Wusterhausen"],
+    cities: ["Berlin-Kreuzberg", "Berlin-Spandau", "Berlin-Zehlendorf", "Königs Wusterhausen"],
     cta: { label: "Alle Standorte ansehen", href: "/standorte" },
   },
 
@@ -302,20 +288,6 @@ const en: HomePageContent = {
           "We fit medical bandages of all kinds precisely to your body.",
         href: "/medizinische-bandagen",
       },
-      {
-        icon: "Accessibility",
-        title: "Rehab equipment",
-        description:
-          "Rollators, wheelchairs and mobility aids for more independence in daily life.",
-        href: "/reha-technik",
-      },
-      {
-        icon: "Stethoscope",
-        title: "Scoliosis brace",
-        description:
-          "Individually fitted brace therapy to correct and stabilise the spine.",
-        href: "/skoliose-korsett",
-      },
     ],
   },
 
@@ -332,7 +304,7 @@ const en: HomePageContent = {
     eyebrow: "Why Sanimotion",
     title: "What sets us apart.",
     items: [
-      { icon: "HandHeart", title: "Outstanding service" },
+      { icon: "HandHeart", title: "Quality service" },
       { icon: "MessageCircle", title: "Expert consultation" },
       { icon: "Clock", title: "Decades of experience" },
       { icon: "BadgeCheck", title: "Premium brand products" },
@@ -409,7 +381,7 @@ const en: HomePageContent = {
       },
       {
         slug: "kreuzberg-meisterschuh",
-        name: "Kreuzberg",
+        name: "Berlin-Kreuzberg",
         address: "Bergmannstraße 5",
         city: "10961 Berlin",
       },
@@ -437,7 +409,7 @@ const en: HomePageContent = {
   locations: {
     eyebrow: "Locations",
     title: "Four medical supply stores in greater Berlin.",
-    cities: ["Kreuzberg", "Spandau", "Zehlendorf", "Königs Wusterhausen"],
+    cities: ["Berlin-Kreuzberg", "Berlin-Spandau", "Berlin-Zehlendorf", "Königs Wusterhausen"],
     cta: { label: "View all locations", href: "/standorte" },
   },
 

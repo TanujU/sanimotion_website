@@ -111,7 +111,7 @@ const de: FaqPageContent = {
         {
           question: "Warum ist mein geliefertes Hilfsmittel gebraucht?",
           answer:
-            "Viele [Reha-Hilfsmittel](/produkte#reha) sind sogenannte Wiedereinsatz-Hilfsmittel im Besitz der Krankenkassen. Diese werden nach Gebrauch desinfiziert, gereinigt und instand gesetzt.",
+            "Viele [Reha-Hilfsmittel](/produkte) sind sogenannte Wiedereinsatz-Hilfsmittel im Besitz der Krankenkassen. Diese werden nach Gebrauch desinfiziert, gereinigt und instand gesetzt.",
         },
         {
           question: "Wieso dauert die Genehmigung eines Hilfsmittels so lange?",
@@ -245,7 +245,7 @@ const en: FaqPageContent = {
         {
           question: "Why is the aid I received used?",
           answer:
-            "Many [rehab aids](/produkte#reha) are so-called re-use items owned by the insurers. They are disinfected, cleaned and reconditioned between uses.",
+            "Many [rehab aids](/produkte) are so-called re-use items owned by the insurers. They are disinfected, cleaned and reconditioned between uses.",
         },
         {
           question: "Why does approval of an aid take so long?",

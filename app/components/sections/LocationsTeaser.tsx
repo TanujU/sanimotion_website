@@ -42,7 +42,10 @@ function slug(city: string) {
     .replace(/ü/g, "u")
     .replace(/ß/g, "ss")
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+    .replace(/(^-|-$)/g, "")
+    // Display labels are "Berlin-Kreuzberg" etc., but storefront photos
+    // and per-location routes are keyed on the bare district slug.
+    .replace(/^berlin-/, "");
 }
 
 export function LocationsTeaser({ content }: LocationsTeaserProps) {

@@ -81,7 +81,7 @@ const de: BeinprothesePageContent = {
     eyebrow: "Unser Versprechen",
     title: "Top-Service von der Beratung bis zur Versorgung",
     items: [
-      { icon: "Award", label: "Ausgezeichneter Service" },
+      { icon: "Award", label: "Service mit Qualität" },
       { icon: "Store", label: "Filialgeschäfte & Online-Shop" },
       { icon: "Home", label: "Hausbesuche in ganz Berlin" },
       { icon: "MessageCircle", label: "Fachkundige Beratung" },
@@ -139,7 +139,7 @@ const en: BeinprothesePageContent = {
     eyebrow: "Our promise",
     title: "Top service — from initial consultation to provision",
     items: [
-      { icon: "Award", label: "Outstanding service" },
+      { icon: "Award", label: "Quality service" },
       { icon: "Store", label: "Stores & online shop" },
       { icon: "Home", label: "Home visits across Berlin" },
       { icon: "MessageCircle", label: "Expert consultation" },

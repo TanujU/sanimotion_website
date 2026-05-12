@@ -58,7 +58,7 @@ const de: ProduktePageContent = {
   meta: {
     title: "Produkte — Sanimotion",
     description:
-      "Maßanfertigung und Beratung: Einlagen, Schuhe, Kompressionsstrümpfe, Orthesen, Prothesen, Bandagen, Reha-Technik und Skoliose-Korsett.",
+      "Maßanfertigung und Beratung: Einlagen, Schuhe, Kompressionsstrümpfe, Orthesen, Prothesen und medizinische Bandagen.",
   },
   hero: {
     eyebrow: "Produkte",
@@ -133,28 +133,6 @@ const de: ProduktePageContent = {
         "Markenprodukte führender Hersteller",
       ],
     },
-    {
-      slug: "reha",
-      icon: "Accessibility",
-      title: "Reha-Technik",
-      lede: "Mobilitätshilfen und Pflegehilfsmittel für mehr Selbstständigkeit.",
-      bullets: [
-        "Rollatoren, Rollstühle, E-Scooter",
-        "Bad- und WC-Hilfen",
-        "Pflegebetten und Anti-Dekubitus-Systeme",
-      ],
-    },
-    {
-      slug: "skoliose",
-      icon: "Stethoscope",
-      title: "Skoliose-Korsett",
-      lede: "Korrektur und Stabilisierung — nach individuellem Befund.",
-      bullets: [
-        "3D-Scan-basierte Anpassung",
-        "Chêneau- und Boston-Korsett",
-        "Begleitung durch erfahrene Techniker",
-      ],
-    },
   ],
   process: {
     eyebrow: "Ablauf",
@@ -199,7 +177,7 @@ const en: ProduktePageContent = {
   meta: {
     title: "Products — Sanimotion",
     description:
-      "Custom-made and expert advice: insoles, shoes, compression stockings, orthoses, prosthetics, bandages, rehab equipment and scoliosis bracing.",
+      "Custom-made and expert advice: insoles, shoes, compression stockings, orthoses, prosthetics and medical bandages.",
   },
   hero: {
     eyebrow: "Products",
@@ -272,28 +250,6 @@ const en: ProduktePageContent = {
         "Knee, ankle and wrist bandages",
         "Back and shoulder bandages",
         "Branded products from leading makers",
-      ],
-    },
-    {
-      slug: "reha",
-      icon: "Accessibility",
-      title: "Rehab equipment",
-      lede: "Mobility and care aids for greater independence.",
-      bullets: [
-        "Rollators, wheelchairs, e-scooters",
-        "Bathroom and toilet aids",
-        "Care beds and anti-decubitus systems",
-      ],
-    },
-    {
-      slug: "skoliose",
-      icon: "Stethoscope",
-      title: "Scoliosis brace",
-      lede: "Correction and stabilization — based on your individual diagnosis.",
-      bullets: [
-        "3D-scan based fitting",
-        "Chêneau and Boston braces",
-        "Guidance from experienced technicians",
       ],
     },
   ],

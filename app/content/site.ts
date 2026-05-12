@@ -21,17 +21,17 @@ const de: SiteContent = {
       href: "/#standorte",
       children: [
         {
-          label: "Kreuzberg",
+          label: "Berlin-Kreuzberg",
           href: "/sanitatshaus-kreuzberg",
           description: "Blücherstraße · Zentrale & Werkstatt",
         },
         {
-          label: "Spandau",
+          label: "Berlin-Spandau",
           href: "/sanitatshaus-spandau",
           description: "Adamstraße · Altstadt Spandau",
         },
         {
-          label: "Zehlendorf",
+          label: "Berlin-Zehlendorf",
           href: "/sanitatshaus-zehlendorf",
           description: "Martin-Buber-Straße",
         },
@@ -109,16 +109,6 @@ const de: SiteContent = {
           href: "/medizinische-bandagen",
           icon: "Bandage",
         },
-        {
-          label: "Reha-Technik",
-          href: "/reha-technik",
-          icon: "Accessibility",
-        },
-        {
-          label: "Skoliose-Korsett",
-          href: "/skoliose-korsett",
-          icon: "Stethoscope",
-        },
       ],
     },
     { label: "Über uns", href: "/ueber-uns" },
@@ -159,16 +149,14 @@ const de: SiteContent = {
           { label: "Prothesen", href: "/prothesen" },
           { label: "Kompressionsstrümpfe", href: "/kompressionsstruempfe" },
           { label: "Medizinische Bandagen", href: "/medizinische-bandagen" },
-          { label: "Reha-Technik", href: "/reha-technik" },
-          { label: "Skoliose-Korsett", href: "/skoliose-korsett" },
         ],
       },
       {
         title: "Standorte",
         links: [
-          { label: "Kreuzberg", href: "/sanitatshaus-kreuzberg" },
-          { label: "Spandau", href: "/sanitatshaus-spandau" },
-          { label: "Zehlendorf", href: "/sanitatshaus-zehlendorf" },
+          { label: "Berlin-Kreuzberg", href: "/sanitatshaus-kreuzberg" },
+          { label: "Berlin-Spandau", href: "/sanitatshaus-spandau" },
+          { label: "Berlin-Zehlendorf", href: "/sanitatshaus-zehlendorf" },
           {
             label: "Königs Wusterhausen",
             href: "/sanitatshaus-konigs-wusterhausen",
@@ -204,17 +192,17 @@ const en: SiteContent = {
       href: "/#standorte",
       children: [
         {
-          label: "Kreuzberg",
+          label: "Berlin-Kreuzberg",
           href: "/sanitatshaus-kreuzberg",
           description: "Blücherstraße · HQ & workshop",
         },
         {
-          label: "Spandau",
+          label: "Berlin-Spandau",
           href: "/sanitatshaus-spandau",
           description: "Adamstraße · Altstadt Spandau",
         },
         {
-          label: "Zehlendorf",
+          label: "Berlin-Zehlendorf",
           href: "/sanitatshaus-zehlendorf",
           description: "Martin-Buber-Straße",
         },
@@ -292,16 +280,6 @@ const en: SiteContent = {
           href: "/medizinische-bandagen",
           icon: "Bandage",
         },
-        {
-          label: "Rehab equipment",
-          href: "/reha-technik",
-          icon: "Accessibility",
-        },
-        {
-          label: "Scoliosis brace",
-          href: "/skoliose-korsett",
-          icon: "Stethoscope",
-        },
       ],
     },
     { label: "About", href: "/ueber-uns" },
@@ -342,16 +320,14 @@ const en: SiteContent = {
           { label: "Prosthetics", href: "/prothesen" },
           { label: "Compression stockings", href: "/kompressionsstruempfe" },
           { label: "Medical bandages", href: "/medizinische-bandagen" },
-          { label: "Rehab equipment", href: "/reha-technik" },
-          { label: "Scoliosis brace", href: "/skoliose-korsett" },
         ],
       },
       {
         title: "Locations",
         links: [
-          { label: "Kreuzberg", href: "/sanitatshaus-kreuzberg" },
-          { label: "Spandau", href: "/sanitatshaus-spandau" },
-          { label: "Zehlendorf", href: "/sanitatshaus-zehlendorf" },
+          { label: "Berlin-Kreuzberg", href: "/sanitatshaus-kreuzberg" },
+          { label: "Berlin-Spandau", href: "/sanitatshaus-spandau" },
+          { label: "Berlin-Zehlendorf", href: "/sanitatshaus-zehlendorf" },
           {
             label: "Königs Wusterhausen",
             href: "/sanitatshaus-konigs-wusterhausen",

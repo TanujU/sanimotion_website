@@ -103,7 +103,7 @@ const de: EinlagenPageContent = {
     eyebrow: "Unser Versprechen",
     title: "Was Sie bei uns erwartet.",
     items: [
-      { icon: "Award", label: "Ausgezeichneter Service" },
+      { icon: "Award", label: "Service mit Qualität" },
       { icon: "Store", label: "Filialgeschäfte & Online-Shop" },
       { icon: "Home", label: "Hausbesuche in ganz Berlin" },
       { icon: "MessageCircle", label: "Fachkundige Beratung" },
@@ -199,7 +199,7 @@ const en: EinlagenPageContent = {
     eyebrow: "Our promise",
     title: "What you can expect from us.",
     items: [
-      { icon: "Award", label: "Outstanding service" },
+      { icon: "Award", label: "Quality service" },
       { icon: "Store", label: "Stores & online shop" },
       { icon: "Home", label: "Home visits across Berlin" },
       { icon: "MessageCircle", label: "Expert consultation" },
