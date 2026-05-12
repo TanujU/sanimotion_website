@@ -22,6 +22,7 @@ import { SmartLink } from "~/components/primitives/SmartLink";
 import { Button } from "~/components/primitives/Button";
 import { LocaleSwitcher } from "~/components/primitives/LocaleSwitcher";
 import { NavDropdown } from "~/components/layout/NavDropdown";
+import { NavAccount } from "~/components/layout/NavAccount";
 import { useUiStore } from "~/stores/ui";
 import doctolibLogo from "~/images/brand/doctolib-white.png";
 
@@ -86,8 +87,8 @@ export function Navbar() {
             )}
           </nav>
 
-          {/* Desktop right cluster — locale switcher + primary CTA */}
-          <div className="hidden items-center gap-6 lg:flex">
+          {/* Desktop right cluster — locale switcher + primary CTA + account */}
+          <div className="hidden items-center gap-4 lg:flex">
             <LocaleSwitcher />
             <Button
               href={site.primaryCta.href}
@@ -103,6 +104,7 @@ export function Navbar() {
                 decoding="async"
               />
             </Button>
+            <NavAccount />
           </div>
 
           {/* Mobile hamburger — hidden from lg up */}

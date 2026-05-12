@@ -21,6 +21,7 @@ import { Container } from "~/components/primitives/Container";
 import { Button } from "~/components/primitives/Button";
 import { LocaleSwitcher } from "~/components/primitives/LocaleSwitcher";
 import { SmartLink } from "~/components/primitives/SmartLink";
+import { NavAccount } from "~/components/layout/NavAccount";
 import { useUiStore } from "~/stores/ui";
 import { easeApple } from "~/lib/motion";
 import doctolibLogo from "~/images/brand/doctolib-white.png";
@@ -117,7 +118,7 @@ export function MobileMenu() {
               </ul>
             </nav>
 
-            {/* Bottom cluster — locale switcher + primary CTA. */}
+            {/* Bottom cluster — locale switcher + primary CTA + account. */}
             <div className="mt-6 shrink-0 space-y-4 pt-4">
               <LocaleSwitcher />
               <Button
@@ -135,6 +136,9 @@ export function MobileMenu() {
                   decoding="async"
                 />
               </Button>
+              <div className="flex justify-center">
+                <NavAccount />
+              </div>
             </div>
           </Container>
         </motion.div>

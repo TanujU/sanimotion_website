@@ -16,6 +16,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -39,6 +40,7 @@ import { LogoWall } from "~/components/sections/LogoWall";
 import { KontaktTermin } from "~/components/sections/KontaktTermin";
 import { Analytics } from "~/components/analytics/Analytics";
 import { ConsentBanner } from "~/components/analytics/ConsentBanner";
+import { AuthProvider } from "~/lib/auth";
 import { getHomeContent } from "~/content/pages/home";
 import { useLocale } from "~/i18n/locale";
 import { getStrings } from "~/i18n/strings";
@@ -86,8 +88,23 @@ export default function App() {
   const locale = useLocale();
   const strings = getStrings(locale);
   const home = getHomeContent(locale);
+  const location = useLocation();
+  // The patient dashboard ships its own sticky header + footer; suppress
+  // the marketing chrome here so the two don't stack.
+  const isBareChrome = location.pathname.startsWith("/mein-bereich");
+
+  if (isBareChrome) {
+    return (
+      <AuthProvider>
+        <Outlet />
+        <Analytics />
+        <ConsentBanner />
+      </AuthProvider>
+    );
+  }
+
   return (
-    <>
+    <AuthProvider>
       <a
         href="#main-content"
         className="focus:rounded-pill focus:bg-ink focus:text-canvas sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2"
@@ -104,7 +121,7 @@ export default function App() {
       <Footer />
       <Analytics />
       <ConsentBanner />
-    </>
+    </AuthProvider>
   );
 }
 
