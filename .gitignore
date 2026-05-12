@@ -1,10 +1,5 @@
 .DS_Store
-.env
-/node_modules/
+node_modules/
 
-# React Router
-/.react-router/
-/build/
-
-# Claude Code local state
-/.claude/
+# Untracked local materials (source images, html exports, etc.)
+assets/
