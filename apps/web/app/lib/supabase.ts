@@ -8,7 +8,7 @@
  * `supabase` is nullable when env vars are missing so SSR / first-paint never
  * throws; call sites guard with `if (!supabase) …`.
  */
-import { getBrowserClient } from "@sanimotion/auth";
+import { getBrowserClient } from "~/lib/auth/client";
 
 export const supabase = getBrowserClient();
 export const isSupabaseConfigured = (): boolean => supabase !== null;

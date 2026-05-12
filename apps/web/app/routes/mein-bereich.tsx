@@ -12,7 +12,7 @@
  */
 import { data } from "react-router";
 import type { Route } from "./+types/mein-bereich";
-import { requireMembership } from "@sanimotion/auth/server";
+import { requireMembership } from "~/lib/auth/server";
 import { PatientDashboardPage } from "~/components/patient/PatientDashboard";
 
 export function meta(_: Route.MetaArgs) {
