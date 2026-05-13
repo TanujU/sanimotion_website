@@ -41,9 +41,23 @@ export function useAuth(): { user: User | null; status: AuthStatus } {
       setStatus(session?.user ? "authenticated" : "anonymous");
     });
 
+    // Recheck session when page becomes visible (e.g., after logout on portal)
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === "visible" && supabase) {
+        const { data } = await supabase.auth.getSession();
+        if (!cancelled) {
+          setUser(data.session?.user ?? null);
+          setStatus(data.session?.user ? "authenticated" : "anonymous");
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     return () => {
       cancelled = true;
       sub.subscription.unsubscribe();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
