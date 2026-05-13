@@ -51,12 +51,16 @@ export function NavAccount({ invert = false }: { invert?: boolean }) {
       invert ? "text-canvas hover:bg-canvas/10" : "text-ink hover:bg-muted",
     );
 
-    // When the portal is on another origin, use a plain <a> for a same-tab
-    // hard navigation. SmartLink defaults externals to target="_blank",
-    // which would break the redirect-back flow.
+    // When the portal is on another origin, open in a new tab.
     if (portalUrl) {
       return (
-        <a href={loginHref} className={linkClass} aria-label={strings.signedOutLabel}>
+        <a
+          href={loginHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={linkClass}
+          aria-label={strings.signedOutLabel}
+        >
           <UserIcon size={16} strokeWidth={1.75} aria-hidden />
           <span>{strings.signedOutLabel}</span>
         </a>
