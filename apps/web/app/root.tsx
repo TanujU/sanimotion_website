@@ -41,6 +41,7 @@ import { KontaktTermin } from "~/components/sections/KontaktTermin";
 import { Analytics } from "~/components/analytics/Analytics";
 import { ConsentBanner } from "~/components/analytics/ConsentBanner";
 import { AuthProvider } from "~/lib/auth";
+import { ContactFAB } from "~/components/forms/ContactFAB";
 import { getHomeContent } from "~/content/pages/home";
 import { useLocale } from "~/i18n/locale";
 import { getStrings } from "~/i18n/strings";
@@ -119,6 +120,7 @@ export default function App() {
         <KontaktTermin content={home.contact} />
       </main>
       <Footer />
+      <ContactFAB />
       <Analytics />
       <ConsentBanner />
     </AuthProvider>

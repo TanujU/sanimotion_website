@@ -1,12 +1,3 @@
-/*
- * ContactForm — prescription submission form.
- *
- * react-hook-form + zod via @hookform/resolvers. Validation messages are
- * pulled from the locale's content module, so error copy is localized.
- *
- * No backend yet — submit is a stub that resolves after a short delay so
- * the user gets the success-state UX. Wire to a real endpoint later.
- */
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,14 +8,16 @@ import { Check } from "lucide-react";
 import { Button } from "~/components/primitives/Button";
 import { cn } from "~/lib/cn";
 import { easeApple } from "~/lib/motion";
+import { supabase } from "~/lib/supabase";
 import type { KontaktPageContent } from "~/content/pages/kontakt";
 
 type ContactFormProps = {
   content: KontaktPageContent["form"];
   defaultIntent?: string;
+  onSuccess?: () => void;
 };
 
-export function ContactForm({ content, defaultIntent }: ContactFormProps) {
+export function ContactForm({ content, defaultIntent, onSuccess }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
 
   const schema = useMemo(
@@ -89,12 +82,30 @@ export function ContactForm({ content, defaultIntent }: ContactFormProps) {
     });
   }, [content, initialIntent, reset]);
 
-  const onSubmit = handleSubmit(async (_values) => {
-    // Stub backend — resolves after 600 ms so the loading state is visible.
-    // Replace with `fetch('/api/contact', { method: 'POST', body: JSON.stringify(values) })`
-    // once a backend endpoint exists.
-    await new Promise((r) => setTimeout(r, 600));
+  const onSubmit = handleSubmit(async (values) => {
+    if (!supabase) return;
+
+    let documentPath: string | null = null;
+    const file: File | undefined = values.document?.[0];
+    if (file) {
+      const ext = file.name.split(".").pop();
+      const path = `${crypto.randomUUID()}.${ext}`;
+      await supabase.storage.from("contact-documents").upload(path, file);
+      documentPath = path;
+    }
+
+    await supabase.from("contact_submissions").insert({
+      first_name: values.firstName,
+      last_name: values.lastName,
+      dob: values.dob,
+      email: values.email,
+      phone: values.phone || null,
+      intent: values.intent,
+      message: values.message,
+      document_path: documentPath,
+    });
     setSubmitted(true);
+    onSuccess?.();
   });
 
   return (

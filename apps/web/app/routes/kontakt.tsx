@@ -1,13 +1,4 @@
-/*
- * /kontakt — Contact page.
- *
- * Hero → channel cards (phone, email, hours) → ContactForm. The form's
- * default intent is read from the URL hash so footer / CTA links like
- * /kontakt#rezept and /kontakt#hausbesuch land on the right radio chip.
- */
 "use client";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router";
 import type { Route } from "./+types/kontakt";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
@@ -17,7 +8,6 @@ import { Reveal } from "~/components/primitives/Reveal";
 import { Icon } from "~/components/primitives/Icon";
 import { SmartLink } from "~/components/primitives/SmartLink";
 import { Button } from "~/components/primitives/Button";
-import { ContactForm } from "~/components/forms/ContactForm";
 import { getKontaktContent } from "~/content/pages/kontakt";
 import { useLocale } from "~/i18n/locale";
 
@@ -29,27 +19,9 @@ export function meta(_: Route.MetaArgs) {
   ];
 }
 
-const HASH_TO_INTENT: Record<string, string> = {
-  rezept: "rezept",
-  hausbesuch: "hausbesuch",
-  termin: "termin",
-};
-
 export default function Kontakt() {
   const locale = useLocale();
   const c = getKontaktContent(locale);
-  const location = useLocation();
-  const [defaultIntent, setDefaultIntent] = useState<string | undefined>();
-
-  useEffect(() => {
-    const hash = location.hash.replace("#", "");
-    setDefaultIntent(HASH_TO_INTENT[hash]);
-    if (hash === "form") {
-      // Allow scroll restoration to settle, then scroll to form.
-      const el = document.getElementById("form");
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [location.hash]);
 
   return (
     <>
@@ -132,33 +104,6 @@ export default function Kontakt() {
         </Container>
       </Section>
 
-      {/* Form */}
-      <Section tone="canvas" id="form">
-        <Container>
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-4">
-              <Reveal>
-                <Eyebrow>{c.form.eyebrow}</Eyebrow>
-                <Heading
-                  as="h2"
-                  size="display-md"
-                  className="mt-6 max-w-[18ch]"
-                >
-                  {c.form.title}
-                </Heading>
-                <p className="text-body-lg text-ink-muted mt-6 max-w-[40ch]">
-                  {c.form.lede}
-                </p>
-              </Reveal>
-            </div>
-            <div className="lg:col-span-8">
-              <Reveal delay={0.05}>
-                <ContactForm content={c.form} defaultIntent={defaultIntent} />
-              </Reveal>
-            </div>
-          </div>
-        </Container>
-      </Section>
     </>
   );
 }
