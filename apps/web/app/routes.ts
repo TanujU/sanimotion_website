@@ -106,4 +106,5 @@ export default [
     "barrierefreiheitserklaerung",
     "routes/barrierefreiheitserklaerung.tsx",
   ),
+  route("sitemap.xml", "routes/sitemap[.]xml.tsx"),
 ] satisfies RouteConfig;

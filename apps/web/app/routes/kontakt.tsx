@@ -1,5 +1,4 @@
 "use client";
-import type { Route } from "./+types/kontakt";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
@@ -11,7 +10,7 @@ import { Button } from "~/components/primitives/Button";
 import { getKontaktContent } from "~/content/pages/kontakt";
 import { useLocale } from "~/i18n/locale";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getKontaktContent("de");
   return [
     { title: c.meta.title },

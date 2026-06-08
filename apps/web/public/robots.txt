@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /mein-bereich
+Disallow: /anmelden
+Disallow: /registrieren
+
+Sitemap: https://www.sanimotion.com/sitemap.xml

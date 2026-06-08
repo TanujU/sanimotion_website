@@ -3,3 +3,7 @@ node_modules/
 
 # Untracked local materials (source images, html exports, etc.)
 assets/
+
+# Patient / patient data exports — never commit to version control
+*.xlsx
+*.csv
