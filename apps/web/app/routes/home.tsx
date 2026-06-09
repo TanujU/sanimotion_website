@@ -21,6 +21,8 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 import type { Route } from "./+types/home";
+import { buildMeta, buildOrganizationSchema, buildWebSiteSchema } from "~/lib/seo";
+import { JsonLd } from "~/components/seo/JsonLd";
 import { getHomeContent } from "~/content/pages/home";
 import { useLocale } from "~/i18n/locale";
 import { HeroPrimary } from "~/components/sections/HeroPrimary";
@@ -35,10 +37,7 @@ import { PartnerStores } from "~/components/sections/PartnerStores";
 export function meta(_: Route.MetaArgs) {
   // Meta runs on the server before locale is known; default to DE.
   const content = getHomeContent("de");
-  return [
-    { title: content.meta.title },
-    { name: "description", content: content.meta.description },
-  ];
+  return buildMeta({ title: content.meta.title, description: content.meta.description, path: "/" });
 }
 
 export default function Home() {
@@ -61,6 +60,8 @@ export default function Home() {
 
   return (
     <>
+      <JsonLd schema={buildOrganizationSchema()} />
+      <JsonLd schema={buildWebSiteSchema()} />
       <HeroPrimary content={content.hero} />
       <AboutSnippet content={content.about} />
       <FeatureCards content={content.features} />

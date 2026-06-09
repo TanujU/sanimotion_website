@@ -1,17 +1,14 @@
 /*
  * /impressum — Pflichtangaben gemäß §5 TMG.
  */
-import type { Route } from "./+types/impressum";
+import { buildMeta } from "~/lib/seo";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
 import { Heading } from "~/components/primitives/Heading";
 
-export function meta(_: Route.MetaArgs) {
-  return [
-    { title: "Impressum — Sanimotion" },
-    { name: "description", content: "Impressum gemäß §5 TMG." },
-  ];
+export function meta() {
+  return buildMeta({ title: "Impressum — Sanimotion", description: "Impressum gemäß §5 TMG.", path: "/impressum" });
 }
 
 export default function Impressum() {

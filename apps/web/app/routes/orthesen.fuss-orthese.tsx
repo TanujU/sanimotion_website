@@ -8,6 +8,9 @@
  */
 "use client";
 import type { Route } from "./+types/orthesen.fuss-orthese";
+import { buildMeta, buildBreadcrumbSchema, buildMedicalDeviceSchema } from "~/lib/seo";
+import { JsonLd } from "~/components/seo/JsonLd";
+import { Breadcrumb } from "~/components/primitives/Breadcrumb";
 import { Phone, Mail } from "lucide-react";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
@@ -22,12 +25,9 @@ import { useLocale } from "~/i18n/locale";
 import heroImageUrl from "~/images/fuss-orthese/fuss-orthese-hero.png";
 import detailImageUrl from "~/images/fuss-orthese/fuss-orthese-detail.png";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getFussOrtheseContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/orthesen/fuss-orthese" });
 }
 
 export default function FussOrthese() {
@@ -36,6 +36,17 @@ export default function FussOrthese() {
 
   return (
     <>
+      <JsonLd schema={buildBreadcrumbSchema([
+        { name: "Startseite", path: "/" },
+        { name: "Orthesen", path: "/orthesen" },
+        { name: "Fuß-Orthese", path: "/orthesen/fuss-orthese" },
+      ])} />
+      <JsonLd schema={buildMedicalDeviceSchema({ name: c.meta.title, description: c.meta.description, path: "/orthesen/fuss-orthese" })} />
+      <Breadcrumb items={[
+        { name: "Startseite", path: "/" },
+        { name: "Orthesen", path: "/orthesen" },
+        { name: "Fuß-Orthese", path: "/orthesen/fuss-orthese" },
+      ]} />
       {/* Hero — split layout with product photo */}
       <section
         className="bg-canvas relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24"

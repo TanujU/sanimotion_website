@@ -3,6 +3,8 @@
  */
 "use client";
 import type { Route } from "./+types/faq";
+import { buildMeta, buildFaqSchema } from "~/lib/seo";
+import { JsonLd } from "~/components/seo/JsonLd";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
@@ -13,20 +15,20 @@ import { AccordionItem } from "~/components/sections/Accordion";
 import { getFaqContent } from "~/content/pages/faq";
 import { useLocale } from "~/i18n/locale";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getFaqContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/faq" });
 }
 
 export default function Faq() {
   const locale = useLocale();
   const c = getFaqContent(locale);
 
+  const allItems = c.groups.flatMap((g) => g.items);
+
   return (
     <>
+      <JsonLd schema={buildFaqSchema(allItems)} />
       {/* Hero */}
       <section
         className="bg-canvas relative overflow-hidden pt-32 pb-16 lg:pt-44 lg:pb-24"

@@ -8,6 +8,9 @@
  */
 "use client";
 import type { Route } from "./+types/orthopaedische-schuhe-berlin.sneaker";
+import { buildMeta, buildBreadcrumbSchema, buildMedicalDeviceSchema } from "~/lib/seo";
+import { JsonLd } from "~/components/seo/JsonLd";
+import { Breadcrumb } from "~/components/primitives/Breadcrumb";
 import { Phone, Mail } from "lucide-react";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
@@ -21,12 +24,9 @@ import { useLocale } from "~/i18n/locale";
 import heroImageUrl from "~/images/sneaker/sneaker-hero.png";
 import detailImageUrl from "~/images/sneaker/sneaker-detail.jpg";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getSneakerContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/orthopaedische-schuhe-berlin/sneaker" });
 }
 
 export default function OrthopaedischeSneaker() {
@@ -35,6 +35,17 @@ export default function OrthopaedischeSneaker() {
 
   return (
     <>
+      <JsonLd schema={buildBreadcrumbSchema([
+        { name: "Startseite", path: "/" },
+        { name: "Orthopädische Schuhe", path: "/orthopaedische-schuhe" },
+        { name: "Sneaker", path: "/orthopaedische-schuhe-berlin/sneaker" },
+      ])} />
+      <JsonLd schema={buildMedicalDeviceSchema({ name: c.meta.title, description: c.meta.description, path: "/orthopaedische-schuhe-berlin/sneaker" })} />
+      <Breadcrumb items={[
+        { name: "Startseite", path: "/" },
+        { name: "Orthopädische Schuhe", path: "/orthopaedische-schuhe" },
+        { name: "Sneaker", path: "/orthopaedische-schuhe-berlin/sneaker" },
+      ]} />
       {/* Hero — split layout with product photo */}
       <section
         className="bg-canvas relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24"

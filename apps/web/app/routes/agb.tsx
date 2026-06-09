@@ -1,21 +1,14 @@
 /*
  * /agb — Allgemeine Geschäftsbedingungen.
  */
-import type { Route } from "./+types/agb";
+import { buildMeta } from "~/lib/seo";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
 import { Heading } from "~/components/primitives/Heading";
 
-export function meta(_: Route.MetaArgs) {
-  return [
-    { title: "AGB — Sanimotion" },
-    {
-      name: "description",
-      content:
-        "Allgemeine Geschäftsbedingungen der Sanimotion Sanitätshaus GmbH.",
-    },
-  ];
+export function meta() {
+  return buildMeta({ title: "AGB — Sanimotion", description: "Allgemeine Geschäftsbedingungen der Sanimotion Sanitätshaus GmbH.", path: "/agb" });
 }
 
 const h2 = "text-heading-lg text-ink font-semibold tracking-tight";

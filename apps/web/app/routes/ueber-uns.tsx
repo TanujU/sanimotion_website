@@ -9,6 +9,7 @@
  */
 "use client";
 import type { Route } from "./+types/ueber-uns";
+import { buildMeta } from "~/lib/seo";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
@@ -25,12 +26,9 @@ import { useLocale } from "~/i18n/locale";
 import heroImageUrl from "~/images/workshop/about-family.jpg";
 import doctolibLogo from "~/images/brand/doctolib-white.png";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getUeberUnsContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/ueber-uns" });
 }
 
 export default function UeberUns() {

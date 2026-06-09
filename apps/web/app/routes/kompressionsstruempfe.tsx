@@ -8,6 +8,9 @@
  */
 "use client";
 import type { Route } from "./+types/kompressionsstruempfe";
+import { buildMeta, buildBreadcrumbSchema, buildMedicalDeviceSchema } from "~/lib/seo";
+import { JsonLd } from "~/components/seo/JsonLd";
+import { Breadcrumb } from "~/components/primitives/Breadcrumb";
 import { Phone, Mail, Check } from "lucide-react";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
@@ -20,12 +23,9 @@ import { getKompressionsstruempfeContent } from "~/content/pages/kompressionsstr
 import { useLocale } from "~/i18n/locale";
 import heroImageUrl from "~/images/kompressionsstruempfe/kompressionsstruempfe-hero.png";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getKompressionsstruempfeContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/kompressionsstruempfe" });
 }
 
 export default function Kompressionsstruempfe() {
@@ -34,6 +34,17 @@ export default function Kompressionsstruempfe() {
 
   return (
     <>
+      <JsonLd schema={buildBreadcrumbSchema([
+        { name: "Startseite", path: "/" },
+        { name: "Produkte", path: "/#produkte" },
+        { name: "Kompressionsstrümpfe", path: "/kompressionsstruempfe" },
+      ])} />
+      <JsonLd schema={buildMedicalDeviceSchema({ name: c.meta.title, description: c.meta.description, path: "/kompressionsstruempfe" })} />
+      <Breadcrumb items={[
+        { name: "Startseite", path: "/" },
+        { name: "Produkte", path: "/#produkte" },
+        { name: "Kompressionsstrümpfe", path: "/kompressionsstruempfe" },
+      ]} />
       {/* Hero — split layout with product photo */}
       <section
         className="bg-canvas relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24"

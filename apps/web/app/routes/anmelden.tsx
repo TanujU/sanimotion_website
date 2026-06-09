@@ -6,6 +6,7 @@
  */
 "use client";
 import type { Route } from "./+types/anmelden";
+import { buildMeta } from "~/lib/seo";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
@@ -15,12 +16,9 @@ import { AuthForm } from "~/components/forms/AuthForm";
 import { getLoginContent } from "~/content/pages/auth";
 import { useLocale } from "~/i18n/locale";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getLoginContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/anmelden" });
 }
 
 export default function Anmelden() {

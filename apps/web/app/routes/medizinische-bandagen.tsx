@@ -8,6 +8,9 @@
 "use client";
 import { useState } from "react";
 import type { Route } from "./+types/medizinische-bandagen";
+import { buildMeta, buildBreadcrumbSchema, buildMedicalDeviceSchema } from "~/lib/seo";
+import { JsonLd } from "~/components/seo/JsonLd";
+import { Breadcrumb } from "~/components/primitives/Breadcrumb";
 import { Phone, Mail, Check, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "~/components/primitives/Container";
@@ -79,12 +82,9 @@ function DetailAccordion({
   );
 }
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getMedizinischeBandagenContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/medizinische-bandagen" });
 }
 
 export default function MedizinischeBandagen() {
@@ -93,6 +93,17 @@ export default function MedizinischeBandagen() {
 
   return (
     <>
+      <JsonLd schema={buildBreadcrumbSchema([
+        { name: "Startseite", path: "/" },
+        { name: "Produkte", path: "/#produkte" },
+        { name: "Medizinische Bandagen", path: "/medizinische-bandagen" },
+      ])} />
+      <JsonLd schema={buildMedicalDeviceSchema({ name: c.meta.title, description: c.meta.description, path: "/medizinische-bandagen" })} />
+      <Breadcrumb items={[
+        { name: "Startseite", path: "/" },
+        { name: "Produkte", path: "/#produkte" },
+        { name: "Medizinische Bandagen", path: "/medizinische-bandagen" },
+      ]} />
       {/* Hero — split layout with product photo */}
       <section
         className="bg-canvas relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24"

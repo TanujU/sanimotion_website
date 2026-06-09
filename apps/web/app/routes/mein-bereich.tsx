@@ -12,14 +12,12 @@
  */
 import { data } from "react-router";
 import type { Route } from "./+types/mein-bereich";
+import { buildMeta } from "~/lib/seo";
 import { requireMembership } from "~/lib/auth/server";
 import { PatientDashboardPage } from "~/components/patient/PatientDashboard";
 
-export function meta(_: Route.MetaArgs) {
-  return [
-    { title: "Mein Bereich — Sanimotion" },
-    { name: "robots", content: "noindex" },
-  ];
+export function meta() {
+  return buildMeta({ title: "Mein Bereich — Sanimotion", description: "Ihr persönlicher Bereich bei Sanimotion.", path: "/mein-bereich", noindex: true });
 }
 
 export async function loader({ request }: Route.LoaderArgs) {

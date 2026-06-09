@@ -8,6 +8,7 @@
  */
 "use client";
 import type { Route } from "./+types/jobs";
+import { buildMeta } from "~/lib/seo";
 import { ArrowUpRight, MapPin, Briefcase } from "lucide-react";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
@@ -20,12 +21,9 @@ import { getJobsContent } from "~/content/pages/jobs";
 import { useLocale } from "~/i18n/locale";
 import heroImageUrl from "~/images/jobs/jobs-hero.jpg";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getJobsContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/jobs" });
 }
 
 export default function Jobs() {

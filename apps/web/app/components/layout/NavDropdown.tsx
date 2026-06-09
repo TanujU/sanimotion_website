@@ -133,7 +133,7 @@ export function NavDropdown({ item }: NavDropdownProps) {
             transition={{ duration: 0.18, ease: easeApple }}
             className={cn(
               "absolute top-full left-1/2 z-50 mt-3 -translate-x-1/2",
-              "border-hairline bg-canvas/95 rounded-card border p-2 backdrop-blur-md",
+              "border-hairline bg-canvas rounded-card border p-2",
               "shadow-soft",
               twoColumn ? "w-[38rem]" : "w-80",
             )}
@@ -239,7 +239,7 @@ function NavChildRow({ child }: { child: NavChild }) {
             transition={{ duration: 0.16, ease: easeApple }}
             className={cn(
               "absolute top-0 left-full z-50 ml-2 w-72",
-              "border-hairline bg-canvas/95 rounded-card border p-2 backdrop-blur-md",
+              "border-hairline bg-canvas rounded-card border p-2",
               "shadow-soft",
             )}
           >

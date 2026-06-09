@@ -1,17 +1,14 @@
 /*
  * /datenschutz — Datenschutzerklärung gemäß DSGVO.
  */
-import type { Route } from "./+types/datenschutz";
+import { buildMeta } from "~/lib/seo";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
 import { Heading } from "~/components/primitives/Heading";
 
-export function meta(_: Route.MetaArgs) {
-  return [
-    { title: "Datenschutz — Sanimotion" },
-    { name: "description", content: "Datenschutzerklärung gemäß DSGVO." },
-  ];
+export function meta() {
+  return buildMeta({ title: "Datenschutz — Sanimotion", description: "Datenschutzerklärung gemäß DSGVO.", path: "/datenschutz" });
 }
 
 export default function Datenschutz() {

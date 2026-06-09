@@ -3,18 +3,11 @@
  * The real Sanimotion onlineshop is a separate property; in production
  * this route may simply redirect to the external URL.
  */
-import type { Route } from "./+types/onlineshop";
+import { buildMeta } from "~/lib/seo";
 import { Placeholder } from "~/components/sections/Placeholder";
 
-export function meta(_: Route.MetaArgs) {
-  return [
-    { title: "Onlineshop — Sanimotion" },
-    {
-      name: "description",
-      content:
-        "Der Sanimotion-Onlineshop ist in Vorbereitung — bestellen Sie ausgewählte Produkte bequem online.",
-    },
-  ];
+export function meta() {
+  return buildMeta({ title: "Onlineshop — Sanimotion", description: "Der Sanimotion-Onlineshop ist in Vorbereitung — bestellen Sie ausgewählte Produkte bequem online.", path: "/onlineshop" });
 }
 
 export default function Onlineshop() {

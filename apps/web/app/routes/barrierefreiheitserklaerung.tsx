@@ -1,21 +1,14 @@
 /*
  * /barrierefreiheitserklaerung — Accessibility statement (BFSG / EAA).
  */
-import type { Route } from "./+types/barrierefreiheitserklaerung";
+import { buildMeta } from "~/lib/seo";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
 import { Heading } from "~/components/primitives/Heading";
 
-export function meta(_: Route.MetaArgs) {
-  return [
-    { title: "Barrierefreiheitserklärung — Sanimotion" },
-    {
-      name: "description",
-      content:
-        "Erklärung zur digitalen Barrierefreiheit gemäß BFSG und EAA.",
-    },
-  ];
+export function meta() {
+  return buildMeta({ title: "Barrierefreiheitserklärung — Sanimotion", description: "Erklärung zur digitalen Barrierefreiheit gemäß BFSG und EAA.", path: "/barrierefreiheitserklaerung" });
 }
 
 const h2 = "text-heading-md text-ink font-semibold tracking-tight";

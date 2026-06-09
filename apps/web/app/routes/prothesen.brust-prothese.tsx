@@ -8,6 +8,9 @@
  */
 "use client";
 import type { Route } from "./+types/prothesen.brust-prothese";
+import { buildMeta, buildBreadcrumbSchema, buildMedicalDeviceSchema } from "~/lib/seo";
+import { JsonLd } from "~/components/seo/JsonLd";
+import { Breadcrumb } from "~/components/primitives/Breadcrumb";
 import { Phone, Mail } from "lucide-react";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
@@ -21,12 +24,9 @@ import { useLocale } from "~/i18n/locale";
 import heroImageUrl from "~/images/brust-prothese/brust-prothese-hero.jpg";
 import detailImageUrl from "~/images/brust-prothese/brust-prothese-detail.jpg";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getBrustProtheseContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/prothesen/brust-prothese" });
 }
 
 export default function BrustProthese() {
@@ -35,6 +35,17 @@ export default function BrustProthese() {
 
   return (
     <>
+      <JsonLd schema={buildBreadcrumbSchema([
+        { name: "Startseite", path: "/" },
+        { name: "Prothesen", path: "/prothesen" },
+        { name: "Brust-Prothese", path: "/prothesen/brust-prothese" },
+      ])} />
+      <JsonLd schema={buildMedicalDeviceSchema({ name: c.meta.title, description: c.meta.description, path: "/prothesen/brust-prothese" })} />
+      <Breadcrumb items={[
+        { name: "Startseite", path: "/" },
+        { name: "Prothesen", path: "/prothesen" },
+        { name: "Brust-Prothese", path: "/prothesen/brust-prothese" },
+      ]} />
       {/* Hero — split layout with product photo */}
       <section
         className="bg-canvas relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24"

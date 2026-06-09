@@ -7,6 +7,9 @@
  */
 "use client";
 import type { Route } from "./+types/orthesen";
+import { buildMeta, buildBreadcrumbSchema } from "~/lib/seo";
+import { JsonLd } from "~/components/seo/JsonLd";
+import { Breadcrumb } from "~/components/primitives/Breadcrumb";
 import { Phone, Mail } from "lucide-react";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
@@ -20,12 +23,9 @@ import { useLocale } from "~/i18n/locale";
 import heroImageUrl from "~/images/orthesen/orthesen-hero.png";
 import detailImageUrl from "~/images/orthesen/orthesen-detail.png";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getOrthesenContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/orthesen" });
 }
 
 export default function Orthesen() {
@@ -34,6 +34,16 @@ export default function Orthesen() {
 
   return (
     <>
+      <JsonLd schema={buildBreadcrumbSchema([
+        { name: "Startseite", path: "/" },
+        { name: "Produkte", path: "/#produkte" },
+        { name: "Orthesen", path: "/orthesen" },
+      ])} />
+      <Breadcrumb items={[
+        { name: "Startseite", path: "/" },
+        { name: "Produkte", path: "/#produkte" },
+        { name: "Orthesen", path: "/orthesen" },
+      ]} />
       {/* Hero — split layout with product photo */}
       <section
         className="bg-canvas relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24"

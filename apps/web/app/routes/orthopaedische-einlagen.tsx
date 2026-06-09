@@ -7,6 +7,9 @@
  */
 "use client";
 import type { Route } from "./+types/orthopaedische-einlagen";
+import { buildMeta, buildBreadcrumbSchema, buildMedicalDeviceSchema } from "~/lib/seo";
+import { JsonLd } from "~/components/seo/JsonLd";
+import { Breadcrumb } from "~/components/primitives/Breadcrumb";
 import { Phone, Mail } from "lucide-react";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
@@ -20,12 +23,9 @@ import { useLocale } from "~/i18n/locale";
 import heroImageUrl from "~/images/einlagen/einlagen-detail.jpeg";
 import detailImageUrl from "~/images/einlagen/einlagen-hero.jpeg";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getEinlagenContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/orthopaedische-einlagen" });
 }
 
 export default function OrthopaedischeEinlagen() {
@@ -34,6 +34,17 @@ export default function OrthopaedischeEinlagen() {
 
   return (
     <>
+      <JsonLd schema={buildBreadcrumbSchema([
+        { name: "Startseite", path: "/" },
+        { name: "Produkte", path: "/#produkte" },
+        { name: "Orthopädische Einlagen", path: "/orthopaedische-einlagen" },
+      ])} />
+      <JsonLd schema={buildMedicalDeviceSchema({ name: c.meta.title, description: c.meta.description, path: "/orthopaedische-einlagen" })} />
+      <Breadcrumb items={[
+        { name: "Startseite", path: "/" },
+        { name: "Produkte", path: "/#produkte" },
+        { name: "Orthopädische Einlagen", path: "/orthopaedische-einlagen" },
+      ]} />
       {/* Hero — split layout with product photo */}
       <section
         className="bg-canvas relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24"

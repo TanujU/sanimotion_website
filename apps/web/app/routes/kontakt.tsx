@@ -1,4 +1,5 @@
 "use client";
+import { buildMeta } from "~/lib/seo";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
@@ -12,10 +13,7 @@ import { useLocale } from "~/i18n/locale";
 
 export function meta() {
   const c = getKontaktContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/kontakt" });
 }
 
 export default function Kontakt() {

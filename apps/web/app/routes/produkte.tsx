@@ -8,6 +8,7 @@
  */
 "use client";
 import type { Route } from "./+types/produkte";
+import { buildMeta } from "~/lib/seo";
 import { Container } from "~/components/primitives/Container";
 import { Section } from "~/components/primitives/Section";
 import { Eyebrow } from "~/components/primitives/Eyebrow";
@@ -18,12 +19,9 @@ import { Reveal } from "~/components/primitives/Reveal";
 import { getProdukteContent } from "~/content/pages/produkte";
 import { useLocale } from "~/i18n/locale";
 
-export function meta(_: Route.MetaArgs) {
+export function meta() {
   const c = getProdukteContent("de");
-  return [
-    { title: c.meta.title },
-    { name: "description", content: c.meta.description },
-  ];
+  return buildMeta({ title: c.meta.title, description: c.meta.description, path: "/produkte" });
 }
 
 export default function Produkte() {
